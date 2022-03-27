@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:star_basis/screens/login_page.dart';
+import 'package:star_basis/services/auth_services.dart';
 // import 'package:star_basis/screens/login_page.dart';
 // import 'package:star_basis/screens/register_page.dart';
 import 'package:star_basis/welcome/welcome_screen.dart';
 
+import 'home/home_page.dart';
+
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,5 +29,6 @@ class MyApp extends StatelessWidget {
       home: const WelcomeScreen(),
     );
   }
+
 }
 

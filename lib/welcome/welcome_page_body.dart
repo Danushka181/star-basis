@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:star_basis/welcome/welcome_header.dart';
 
 import '../screens/login_page.dart';
+import '../screens/register_page.dart';
 import '../widgets/big_text_widget.dart';
 import '../widgets/btn_widget.dart';
 
@@ -11,10 +12,15 @@ class WelcomePageBody extends StatelessWidget {
   const WelcomePageBody({Key? key}) : super(key: key);
 
   loginBtnPressed(context) {
-    // Route route = MaterialPageRoute(builder: (context) => const LoginPage());
-    // Navigator.pushReplacement(context, route);
-    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const LoginPage()));
+    Route route = MaterialPageRoute(builder: (context) => const LoginPage());
+    Navigator.pushReplacement(context, route);
+    // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const LoginPage()));
     // Navigator.pushReplacementNamed(context, LoginPage());
+  }
+
+  registerBtnPressed(BuildContext context) {
+    Route route = MaterialPageRoute(builder: (context) => const RegisterPage());
+    Navigator.pushReplacement(context, route);
   }
 
   @override
@@ -31,16 +37,18 @@ class WelcomePageBody extends StatelessWidget {
        ),
        const BigTextWidget(content: 'wellcome to starbasis portal', fontSize: 18,colorCode: Colors.blueGrey,fontWeight: FontWeight.w400,),
        const SizedBox(
-        height: 100,
+        height: 60,
        ),
        ButtonWidget(onButtonPres:() => loginBtnPressed(context),btnText: 'Log in',),
        const SizedBox(
          height: 20,
        ),
-       ButtonWidget(onButtonPres:() => null,btnText: 'Create an Account',btnFontWeight: FontWeight.w400,),
+       ButtonWidget(onButtonPres:() => registerBtnPressed(context),btnText: 'Create an Account',btnFontWeight: FontWeight.w400,),
+       const SizedBox(
+         height: 20,
+       )
      ]
     );
   }
-
 
 }
