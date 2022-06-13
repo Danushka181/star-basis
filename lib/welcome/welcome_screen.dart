@@ -18,21 +18,21 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
 
-  late bool isLoading = false;
-  late int _userId;
-  late String _token;
+  bool isLoading = false;
 
   _getUserData() async {
     SharedPreferences storage = await SharedPreferences.getInstance();
     String? _token = storage.getString('token');
     if(_token != null){
       http.Response response = await AuthServices.refresh(_token);
-      print(response.body);
       if( response.statusCode == 200){
         Map responseMap = jsonDecode(response.body);
         _token  = responseMap['access_token'];
         SharedPreferences storage = await SharedPreferences.getInstance();
         await storage.setString('token', _token! );
+        setState(() {
+          isLoading = true;
+        });
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> const HomePage()));
       }else{
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> const LoginPage()));
@@ -53,15 +53,19 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     _getUserData();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
-            padding: EdgeInsets.all(0),
+            padding: const EdgeInsets.all(0),
             child: SingleChildScrollView(
-              child: WelcomePageBody(),
+              child: Column(
+                children: [
+                  const WelcomePageBody(),
+                  isLoading ? const Center(child: CircularProgressIndicator(),) : const Center(),
+                ],
+              )
             )
         )
     );

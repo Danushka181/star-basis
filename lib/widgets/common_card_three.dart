@@ -72,7 +72,7 @@ class CommonCardThree extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.only(top: 4,bottom: 4,left: 8, right: 8),
                     decoration: BoxDecoration(
-                      color: Colors.lightGreen,
+                      color: Colors.grey,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(

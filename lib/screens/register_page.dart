@@ -1,12 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:star_basis/services/auth_services.dart';
 import 'package:http/http.dart' as http;
 import 'package:star_basis/services/globals.dart';
 
-import '../home/home_page.dart';
+import '../widgets/app_bar.dart';
 import '../widgets/btn_widget.dart';
 import 'login_page.dart';
 
@@ -50,22 +49,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        iconTheme: const IconThemeData(
-          color: Colors.black54, //change your color here
-        ),
-        elevation: 4,
-        title: const Text(
-          "Register with Star Basis",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Inter'
-          ),
-        ),
-      ),
+      appBar: const AppBarWidget(title: 'Register'),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(

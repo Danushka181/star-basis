@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:star_basis/centers/centers_page.dart';
 import 'package:star_basis/loans/loan_dashboard.dart';
 
+import '../../customer_groups/customer_groups.dart';
 import '../../widgets/big_text_widget.dart';
 import '../../widgets/common_card_one.dart';
 
@@ -47,7 +48,11 @@ class _FirstTabState extends State<FirstTab> {
               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const CentersPage())),
               child: const CommonCardOne(iconName: Icons.store, cardSubHeading: 'Add, Edit or Delete centers in area', cardHeading: 'Centers',),
             ),
-            CommonCardOne(iconName: Icons.group, cardSubHeading: 'Add, Edit or Delete Customer Groups', cardHeading: 'Customer Groups',),
+            GestureDetector(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const CustomerGroups())),
+              child: const CommonCardOne(iconName: Icons.group, cardSubHeading: 'Add, Edit or Delete Customer Groups', cardHeading: 'Customer Groups',),
+            ),
+
             CommonCardOne(iconName: Icons.widgets, cardSubHeading: 'Add, Edit or Delete Loan products', cardHeading: 'Loan Products',),
             CommonCardOne(iconName: Icons.trending_up, cardSubHeading: 'Add Loan Rates for future loans', cardHeading: 'Loan Rates',),
           ],
