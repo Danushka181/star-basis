@@ -52,14 +52,14 @@ class _CentersPageState extends State<CentersPage> {
   void centersSearch(String query) {
     searchItems = [];
     if (query.isNotEmpty) {
-      allCentersList.forEach((item) {
+      for (var item in allCentersList) {
         if (item['center_name']
             .toString()
             .toLowerCase()
             .contains(query.toLowerCase())) {
           searchItems.add(item);
         }
-      });
+      }
       setState(() {
         centersList = searchItems;
       });
@@ -125,6 +125,8 @@ class _CentersPageState extends State<CentersPage> {
                       shrinkWrap: true,
                       itemCount: centersList != null ? centersList.length : 0,
                       itemBuilder: (_, index) {
+                        print(centersList[index]['user']);
+                        Map<String, dynamic> userData   = centersList[index]['user'];
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(
@@ -135,7 +137,7 @@ class _CentersPageState extends State<CentersPage> {
                                     centerName: centersList[index]['center_name'].toString(),
                                     centerAddress: centersList[index]['center_address'].toString(),
                                     centerCreated: centersList[index]['created_at'].toString(),
-                                    centerUser: centersList[index]['user_name'].toString(),
+                                    centerUser: userData['name'].toString(),
                                 ),
                               ),
                             );
@@ -148,8 +150,7 @@ class _CentersPageState extends State<CentersPage> {
                                   DateTime.parse(
                                           centersList[index]['created_at'])
                                       .toLocal()),
-                              createdBy:
-                                  centersList[index]['user_name'].toString(),
+                              createdBy: userData['name'].toString(),
                               cardSubHeading: centersList[index]
                                   ['center_address']),
                         );
