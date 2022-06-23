@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class BigTextWidget extends StatelessWidget {
 
   final String content;
-  final fontSize;
+  final double fontSize;
   final colorCode;
   final fontWeight;
 
@@ -13,7 +13,7 @@ class BigTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-        content,
+        content.length > 35 ? content.substring(0, 35)+'...' : content,
         style: TextStyle(
           fontFamily: 'Inter',
           fontSize: fontSize,

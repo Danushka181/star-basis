@@ -48,9 +48,8 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        manifestPlaceholders = [
-        appAuthRedirectScheme: 'io.identityserver.demo'
-      ]
+        manifestPlaceholders += ['appAuthRedirectScheme': 'YOURSCHEME']
+
     }
 
     buildTypes {
