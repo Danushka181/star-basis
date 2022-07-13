@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'big_text_widget.dart';
@@ -35,7 +34,7 @@ class CommonCardTwo extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    BigTextWidget(content: '#24', fontSize: 22, colorCode: Colors.lightGreen,fontWeight: FontWeight.w400,),
+                    const BigTextWidget(content: '#24', fontSize: 22, colorCode: Colors.lightGreen,fontWeight: FontWeight.w400,),
                     BigTextWidget(content: '2021-02-06', fontSize: 12, colorCode: Colors.black54.withOpacity(0.5), fontWeight: FontWeight.w500,),
                   ],
                 ),

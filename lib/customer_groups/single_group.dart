@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -13,14 +12,16 @@ import '../widgets/big_text_widget.dart';
 import '../widgets/label_text.dart';
 
 class SingleGroup extends StatefulWidget {
-  String centerId, centerName, centerAddress, centerUser, centerCreated;
+  String centerId, centerName, centerAddress, centerUser, centerCreated,mainCenter;
 
-  SingleGroup({Key? key,
-    required this.centerId,
-    required this.centerName,
-    required this.centerAddress,
-    required this.centerCreated,
-    required this.centerUser})
+  SingleGroup(
+      {Key? key,
+      required this.centerId,
+      required this.centerName,
+      required this.centerAddress,
+      required this.centerCreated,
+      required this.mainCenter,
+      required this.centerUser})
       : super(key: key);
 
   @override
@@ -45,7 +46,8 @@ class _SingleGroupState extends State<SingleGroup> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
+              padding: const EdgeInsets.only(
+                  top: 10, bottom: 10, left: 15, right: 15),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -65,7 +67,11 @@ class _SingleGroupState extends State<SingleGroup> {
                   ),
                   Row(
                     children: const [
-                      LabelText(content: 'Name :', fontSize: 18,colorCode: Colors.blueGrey,),
+                      LabelText(
+                        content: 'Name :',
+                        fontSize: 18,
+                        colorCode: Colors.blueGrey,
+                      ),
                     ],
                   ),
                   const SizedBox(
@@ -73,7 +79,11 @@ class _SingleGroupState extends State<SingleGroup> {
                   ),
                   Row(
                     children: [
-                      LabelText(content: widget.centerName, fontSize: 22, colorCode: Colors.grey,),
+                      LabelText(
+                        content: widget.centerName,
+                        fontSize: 22,
+                        colorCode: Colors.grey,
+                      ),
                     ],
                   ),
 
@@ -83,7 +93,11 @@ class _SingleGroupState extends State<SingleGroup> {
                   ),
                   Row(
                     children: const [
-                      LabelText(content: 'Address :', fontSize: 18,colorCode: Colors.blueGrey,),
+                      LabelText(
+                        content: 'Address :',
+                        fontSize: 18,
+                        colorCode: Colors.blueGrey,
+                      ),
                     ],
                   ),
                   const SizedBox(
@@ -91,7 +105,11 @@ class _SingleGroupState extends State<SingleGroup> {
                   ),
                   Row(
                     children: [
-                      LabelText(content: widget.centerAddress, fontSize: 22, colorCode: Colors.grey,),
+                      LabelText(
+                        content: widget.centerAddress,
+                        fontSize: 22,
+                        colorCode: Colors.grey,
+                      ),
                     ],
                   ),
 
@@ -101,7 +119,11 @@ class _SingleGroupState extends State<SingleGroup> {
                   ),
                   Row(
                     children: const [
-                      LabelText(content: 'Added By :', fontSize: 18,colorCode: Colors.blueGrey,),
+                      LabelText(
+                        content: 'Added By :',
+                        fontSize: 18,
+                        colorCode: Colors.blueGrey,
+                      ),
                     ],
                   ),
                   const SizedBox(
@@ -109,7 +131,11 @@ class _SingleGroupState extends State<SingleGroup> {
                   ),
                   Row(
                     children: [
-                      LabelText(content: widget.centerUser, fontSize: 22, colorCode: Colors.grey,),
+                      LabelText(
+                        content: widget.centerUser,
+                        fontSize: 22,
+                        colorCode: Colors.grey,
+                      ),
                     ],
                   ),
 
@@ -119,7 +145,11 @@ class _SingleGroupState extends State<SingleGroup> {
                   ),
                   Row(
                     children: const [
-                      LabelText(content: 'Created Date :', fontSize: 18,colorCode: Colors.blueGrey,),
+                      LabelText(
+                        content: 'Created Date :',
+                        fontSize: 18,
+                        colorCode: Colors.blueGrey,
+                      ),
                     ],
                   ),
                   const SizedBox(
@@ -127,22 +157,44 @@ class _SingleGroupState extends State<SingleGroup> {
                   ),
                   Row(
                     children: [
-                      LabelText(content: DateFormat.yMMMEd().format(
-                          DateTime.parse(widget.centerCreated)
-                              .toLocal()) , fontSize: 22, colorCode: Colors.grey,),
+                      LabelText(
+                        content: DateFormat.yMMMEd().format(
+                            DateTime.parse(widget.centerCreated).toLocal()),
+                        fontSize: 22,
+                        colorCode: Colors.grey,
+                      ),
                     ],
                   ),
-
-
                   const SizedBox(
                     height: 30,
                   ),
+                  Row(
+                    children: const [
+                      LabelText(
+                        content: 'Center Name :',
+                        fontSize: 18,
+                        colorCode: Colors.blueGrey,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      LabelText(
+                        content: widget.mainCenter,
+                        fontSize: 22,
+                        colorCode: Colors.grey,
+                      ),
+                    ],
+                  ),
                   isLoading
                       ? const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.lightGreen,
-                    ),
-                  )
+                          child: CircularProgressIndicator(
+                            color: Colors.lightGreen,
+                          ),
+                        )
                       : Container(),
                 ],
               ),
@@ -165,19 +217,26 @@ class _SingleGroupState extends State<SingleGroup> {
                   // make after confirmation
                   showModalBottomSheet(
                     backgroundColor: Colors.transparent,
-                    context: context, builder: (BuildContext context) {
+                    context: context,
+                    builder: (BuildContext context) {
                       return Container(
                         height: 200,
                         decoration: const BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30)),
                         ),
                         child: Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              const LabelText(content: 'Please confirm to delete this center', fontSize: 18,colorCode: Colors.blueGrey,),
+                              const LabelText(
+                                content: 'Please confirm to delete this center',
+                                fontSize: 18,
+                                colorCode: Colors.blueGrey,
+                              ),
                               const SizedBox(
                                 height: 20,
                               ),
@@ -188,24 +247,28 @@ class _SingleGroupState extends State<SingleGroup> {
                                 ),
                                 child: const Text('Confirm'),
                                 onPressed: () async {
-                                http.Response response = await CentersService.deleteCenters(widget.centerId);
-                                Map responseMap = jsonDecode(response.body);
-                                if (response.statusCode == 200) {
-                                  successSnackBar(context, responseMap['message']);
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              const CentersPage()));
-                                } else {
-                                  Navigator.pop(context);
-                                  errorSnackBar(context, responseMap['error']);
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                          const CentersPage()));
-                                }
+                                  http.Response response =
+                                      await CentersService.deleteCenters(
+                                          widget.centerId);
+                                  Map responseMap = jsonDecode(response.body);
+                                  if (response.statusCode == 200) {
+                                    successSnackBar(
+                                        context, responseMap['message']);
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                const CentersPage()));
+                                  } else {
+                                    Navigator.pop(context);
+                                    errorSnackBar(
+                                        context, responseMap['error']);
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                const CentersPage()));
+                                  }
                                 },
                               )
                             ],

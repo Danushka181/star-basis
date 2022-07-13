@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
-import '../widgets/common_card_one.dart';
 import '../widgets/common_card_two.dart';
 
 class LoanDashboard extends StatefulWidget {
@@ -76,21 +74,21 @@ class _LoanDashboardState extends State<LoanDashboard> with TickerProviderStateM
             flex: 1,
             child: TabBarView(
               children: [
-                Container(
+                SizedBox(
                   height: double.infinity,
                   width: double.infinity,
                   child: SingleChildScrollView(
                     child: Column(
-                      children: [
+                      children: const [
                         CommonCardTwo( cardHeading: 'A K G Kalu Manika A K G Kalu ManikaA K G Kalu Manika', cardSubHeading: '163-c, Kotarupe, Raddolugama', loanAmount: '5000',),
                         CommonCardTwo( cardHeading: 'A K G Kalu Manika A K G Kalu ManikaA K G Kalu Manika', cardSubHeading: '163-c, Kotarupe, Raddolugama', loanAmount: '43500',),
                       ],
                     ),
                   ),
                 ),
-                Text('Person'),
-                Text('test'),
-                Text('test 4'),
+                const Text('Person'),
+                const Text('test'),
+                const Text('test 4'),
               ],
               controller: _tabController,
             ),

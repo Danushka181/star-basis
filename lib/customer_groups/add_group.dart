@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:star_basis/services/globals.dart';
 import 'package:star_basis/widgets/app_bar.dart';
@@ -23,11 +22,16 @@ class _AddNewGroupState extends State<AddNewGroup> {
 
   late String _groupName;
   late String _groupDesc;
-  late String _centerId;
-  late List centersList;
+  late String _centerId = '-1';
+  static const defArr  = {'id':-1,'center_name':'Select a Center'};
+  late List centersList = [];
 
   bool isLoading = true;
-  late String _buttonText = 'Create a Group';
+  // add group message before btn click
+  final String _addGroupText   = 'Create a Group';
+  // adding group message after btn click
+  final String _addingGroupText   = 'Creating a Group';
+  late String _buttonText = _addGroupText;
 
   addGroupsHandler(groupName, groupDesc, centerId) async {
     http.Response response = await CustomerGroupServices.addGroup(groupName, groupDesc,centerId);
@@ -37,6 +41,7 @@ class _AddNewGroupState extends State<AddNewGroup> {
       setState(() {
         isLoading = false;
         _buttonText = 'Create a Group';
+        _centerId = '-1';
       });
       _formKey.currentState?.reset();
     } else {
@@ -58,6 +63,7 @@ class _AddNewGroupState extends State<AddNewGroup> {
     if (response.statusCode == 200) {
       setState(() {
         centersList = responseMap['centers'];
+        centersList = [defArr,...centersList];
         isLoading = false;
       });
     } else {
@@ -95,7 +101,7 @@ class _AddNewGroupState extends State<AddNewGroup> {
                     TextFormField(
                       decoration: InputDecoration(
                           labelText: 'Group Name',
-                          hintText: "Bodubalasena",
+                          hintText: "Pipena Kakulu",
                           hintStyle: TextStyle(
                             color: Colors.black54.withOpacity(0.3),
                           ),
@@ -134,7 +140,7 @@ class _AddNewGroupState extends State<AddNewGroup> {
                       },
                       validator: (String? value) {
                         if (value != null && value.isEmpty) {
-                          return 'Address is required please enter';
+                          return 'Group Description is required please enter';
                         }
                         return null;
                       },
@@ -145,16 +151,18 @@ class _AddNewGroupState extends State<AddNewGroup> {
                     Column(
                       children: [
                         DropdownButton(
-                          items: isLoading ? centersList.map((dynamic center) {
+                          items: centersList.map((dynamic center) {
                             return DropdownMenuItem<String>(
                               value: center['id'].toString(),
                               child: Text(center['center_name'].toString()),
                             );
                           }).toList(),
+                          hint: const Text("Select a Center"),
+                          value: _centerId,
                           onChanged: (String? value) {
                             setState(() {
                               _centerId = value!;
-                            });
+                            },);
                           },
                         )
                       ],
@@ -195,12 +203,19 @@ class _AddNewGroupState extends State<AddNewGroup> {
                           onPressed: () {
                             // It returns true if the form is valid, otherwise returns false
                             if (_formKey.currentState!.validate()) {
-                              // If the form is valid, display a Snackbar.
                               setState(() {
-                                _buttonText = 'Adding group..';
+                                _buttonText = _addingGroupText;
                                 isLoading = true;
                               });
-                              addGroupsHandler(_groupName, _groupDesc,_centerId);
+                              if (_centerId == '-1'){
+                                setState(() {
+                                  _buttonText = _addGroupText;
+                                  isLoading = false;
+                                });
+                                errorSnackBar(context, 'Please select a center');
+                              }else{
+                                addGroupsHandler(_groupName, _groupDesc,_centerId);
+                              }
                             }
                           },
                         )

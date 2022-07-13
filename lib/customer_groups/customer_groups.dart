@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:star_basis/customer_groups/single_group.dart';
@@ -125,6 +124,7 @@ class _CustomerGroupsState extends State<CustomerGroups> {
                   itemCount: groupList != null ? groupList.length : 0,
                   itemBuilder: (_, index) {
                     Map<String, dynamic> userdata = groupList[index]['user'];
+                    Map<String, dynamic> centerData = groupList[index]['center'];
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -140,6 +140,7 @@ class _CustomerGroupsState extends State<CustomerGroups> {
                                   centerCreated: groupList[index]['created_at']
                                       .toString(),
                                   centerUser: userdata['name'].toString(),
+                                    mainCenter: centerData['center_name'].toString(),
                                 ),
                           ),
                         );

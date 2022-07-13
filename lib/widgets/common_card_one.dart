@@ -1,8 +1,6 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../loans/loan_dashboard.dart';
 import 'big_text_widget.dart';
 
 class CommonCardOne extends StatelessWidget {
