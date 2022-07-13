@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:star_basis/screens/login_page.dart';
-import 'package:star_basis/services/auth_services.dart';
 // import 'package:star_basis/screens/login_page.dart';
 // import 'package:star_basis/screens/register_page.dart';
 import 'package:star_basis/welcome/welcome_screen.dart';
 
-import 'home/home_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:star_basis/home/tabs/first_tab.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:star_basis/home/tabs/second_tab.dart';
 
-import '../services/auth_services.dart';
 import '../widgets/big_text_widget.dart';
 
 
@@ -80,7 +79,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin   {
             ],
           ),
         ),
-        Container(color: Colors.green),
+        Container(
+            color: Colors.white30,
+            child: Stack(
+                children: const [
+                SecondTab(),
+          ],
+          ),
+        ),
         Container(color: Colors.blue)
       ]),
       bottomNavigationBar: GFTabBar(

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:star_basis/centers/add_centers.dart';
@@ -13,6 +12,7 @@ import '../services/globals.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/big_text_widget.dart';
 import '../widgets/common_card_three.dart';
+import '../widgets/loading_widget.dart';
 
 class CentersPage extends StatefulWidget {
   const CentersPage({Key? key}) : super(key: key);
@@ -52,14 +52,14 @@ class _CentersPageState extends State<CentersPage> {
   void centersSearch(String query) {
     searchItems = [];
     if (query.isNotEmpty) {
-      allCentersList.forEach((item) {
+      for (var item in allCentersList) {
         if (item['center_name']
             .toString()
             .toLowerCase()
             .contains(query.toLowerCase())) {
           searchItems.add(item);
         }
-      });
+      }
       setState(() {
         centersList = searchItems;
       });
@@ -87,8 +87,7 @@ class _CentersPageState extends State<CentersPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(
-                    top: 10, bottom: 10, left: 15, right: 15),
+                padding: const EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
                 child: TextField(
                   decoration: InputDecoration(
                     hintText: "Search centers..",
@@ -125,6 +124,8 @@ class _CentersPageState extends State<CentersPage> {
                       shrinkWrap: true,
                       itemCount: centersList != null ? centersList.length : 0,
                       itemBuilder: (_, index) {
+                        print(centersList[index]['user']);
+                        Map<String, dynamic> userData   = centersList[index]['user'];
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(
@@ -135,7 +136,7 @@ class _CentersPageState extends State<CentersPage> {
                                     centerName: centersList[index]['center_name'].toString(),
                                     centerAddress: centersList[index]['center_address'].toString(),
                                     centerCreated: centersList[index]['created_at'].toString(),
-                                    centerUser: centersList[index]['user_name'].toString(),
+                                    centerUser: userData['name'].toString(),
                                 ),
                               ),
                             );
@@ -148,32 +149,12 @@ class _CentersPageState extends State<CentersPage> {
                                   DateTime.parse(
                                           centersList[index]['created_at'])
                                       .toLocal()),
-                              createdBy:
-                                  centersList[index]['user_name'].toString(),
+                              createdBy: userData['name'].toString(),
                               cardSubHeading: centersList[index]
                                   ['center_address']),
                         );
                       })
-                  : Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          CircularProgressIndicator(
-                            color: Colors.lightGreen,
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            'Loading..',
-                            style: TextStyle(
-                              color: Colors.black54,
-                              fontFamily: 'Inter',
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  : const LoadingWidget(),
               const SizedBox(
                 height: 100,
               )
