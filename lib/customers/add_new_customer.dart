@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:star_basis/customers/select_member_group.dart';
 
 import '../widgets/app_bar.dart';
 import '../widgets/common_card_details_row.dart';
@@ -13,42 +14,35 @@ class AddNewCustomers extends StatefulWidget {
 }
 
 class _AddNewCustomersState extends State<AddNewCustomers> {
-
   final _formKey = GlobalKey<FormState>();
 
   late String _date;
-  late List<bool> isSelected =[true, false];
+  late List<bool> isSelected = [true, false];
   late bool married = true;
   late List<bool> gender = [true, false];
-  late bool sexType   = true;
+  late bool sexType = true;
 
-  // birth day date select adding here
+// birth day date select adding here
   TextEditingController intialdateval = TextEditingController();
+
   Future _selectDate() async {
     DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1950),
-        lastDate: DateTime(2030));
+        context: context, initialDate: DateTime.now(), firstDate: DateTime(1950), lastDate: DateTime(2030));
     if (picked != null) {
-      setState(() =>
-      {
-        _date = picked.toString(),
-        intialdateval.text = DateFormat('yyyy-MM-dd').format(
-            DateTime.parse(_date).toLocal()
-        )
-      }
-      );
+      setState(() => {
+            _date = picked.toString(),
+            intialdateval.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(_date).toLocal())
+          });
     }
   }
 
-  // Label common Styles
+// Label common Styles
   final _labelStyle = TextStyle(
-                        fontFamily: 'Inter',
-                        color: Colors.black.withOpacity(0.5),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      );
+    fontFamily: 'Inter',
+    color: Colors.black.withOpacity(0.5),
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+  );
 
   @override
   void initState() {
@@ -60,34 +54,31 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
     return Scaffold(
       appBar: const AppBarWidget(title: 'Add New Customer'),
       body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          children: [
-            CustomPageHeading(smallHeading: 'ADD NEW', headerLargeText: 'CUSTOMERS'),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.only(top: 20,bottom: 100,left: 20, right: 20),
-              child: Column(
-                children: [
-                  CommonCardUserRow(rowHeading: '', rowValue: 'PERSONAL DETAILS :'),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-
-                        //full name with initials
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              CustomPageHeading(smallHeading: 'ADD NEW', headerLargeText: 'CUSTOMERS'),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.only(top: 20, bottom: 100, left: 20, right: 20),
+                child: Column(
+                  children: [
+                    CommonCardUserRow(rowHeading: '', rowValue: 'PERSONAL DETAILS :'),
+                    Form(
+                      key: _formKey,
+                      child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+//full name with initials
                         TextFormField(
                           decoration: InputDecoration(
-                              labelText: 'Full name with Initials',
-                              hintText: "W D Mdushanka",
-                              hintStyle: TextStyle(
-                                color: Colors.black54.withOpacity(0.3),
-                              ),
-                              labelStyle: _labelStyle,
+                            labelText: 'Full name with Initials',
+                            hintText: "W D Mdushanka",
+                            hintStyle: TextStyle(
+                              color: Colors.black54.withOpacity(0.3),
+                            ),
+                            labelStyle: _labelStyle,
                           ),
                           onChanged: (value) {
-                            // _centerName = value;
+// _centerName = value;
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -101,18 +92,18 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           height: 20,
                         ),
 
-                        //Permanent Address
+//Permanent Address
                         TextFormField(
                           decoration: InputDecoration(
-                              labelText: 'Permanent Address',
-                              hintText: "163-c, Raddolugama,Seeduwa",
-                              hintStyle: TextStyle(
-                                color: Colors.black54.withOpacity(0.3),
-                              ),
-                              labelStyle: _labelStyle,
+                            labelText: 'Permanent Address',
+                            hintText: "163-c, Raddolugama,Seeduwa",
+                            hintStyle: TextStyle(
+                              color: Colors.black54.withOpacity(0.3),
+                            ),
+                            labelStyle: _labelStyle,
                           ),
                           onChanged: (value) {
-                            // _centerName = value;
+// _centerName = value;
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -126,15 +117,15 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           height: 20,
                         ),
 
-                        // Date of birth
+// Date of birth
                         TextFormField(
                           decoration: InputDecoration(
-                              labelText: 'Date Of Birth',
-                              hintText: "1992 01 20",
-                              hintStyle: TextStyle(
-                                color: Colors.black54.withOpacity(0.3),
-                              ),
-                              labelStyle: _labelStyle,
+                            labelText: 'Date Of Birth',
+                            hintText: "1992 01 20",
+                            hintStyle: TextStyle(
+                              color: Colors.black54.withOpacity(0.3),
+                            ),
+                            labelStyle: _labelStyle,
                             suffixIcon: const Icon(Icons.today),
                           ),
                           keyboardType: TextInputType.phone,
@@ -160,7 +151,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           height: 20,
                         ),
 
-                        //Customer age
+//Customer age
                         TextFormField(
                           decoration: InputDecoration(
                             labelText: 'Age',
@@ -172,7 +163,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
-                            // _centerName = value;
+// _centerName = value;
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -186,7 +177,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           height: 20,
                         ),
 
-                        //Customer ID card
+//Customer ID card
                         TextFormField(
                           decoration: InputDecoration(
                             labelText: 'Identity Card Number',
@@ -198,7 +189,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.text,
                           onChanged: (value) {
-                            // _centerName = value;
+// _centerName = value;
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -212,27 +203,26 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           height: 20,
                         ),
 
-                        //Job data
+//Job data
                         TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'Job',
-                            hintText: "Software Engineer",
-                            hintStyle: TextStyle(
-                              color: Colors.black54.withOpacity(0.3),
+                            decoration: InputDecoration(
+                              labelText: 'Job',
+                              hintText: "Software Engineer",
+                              hintStyle: TextStyle(
+                                color: Colors.black54.withOpacity(0.3),
+                              ),
+                              labelStyle: _labelStyle,
                             ),
-                            labelStyle: _labelStyle,
-                          ),
-                          keyboardType: TextInputType.text,
-                          onChanged: (value) {
-                            // _centerName = value;
-                          }
-                        ),
+                            keyboardType: TextInputType.text,
+                            onChanged: (value) {
+// _centerName = value;
+                            }),
 
                         const SizedBox(
                           height: 20,
                         ),
 
-                        //Month income
+//Month income
                         TextFormField(
                           decoration: InputDecoration(
                             labelText: 'Monthly Income',
@@ -244,7 +234,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.phone,
                           onChanged: (value) {
-                            // _centerName = value;
+// _centerName = value;
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -258,7 +248,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           height: 50,
                         ),
 
-                        //Gender collect
+//Gender collect
                         Container(
                           width: MediaQuery.of(context).size.width,
                           child: ToggleButtons(
@@ -287,9 +277,9 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                               setState(() {
                                 for (int i = 0; i < gender.length; i++) {
                                   gender[i] = i == index;
-                                  if ( index == 0){
+                                  if (index == 0) {
                                     sexType = true;
-                                  }else{
+                                  } else {
                                     sexType = false;
                                   }
                                 }
@@ -303,7 +293,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           height: 30,
                         ),
 
-                        //Married or Unmarried
+//Married or Unmarried
                         Container(
                           width: MediaQuery.of(context).size.width,
                           child: ToggleButtons(
@@ -332,9 +322,9 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                               setState(() {
                                 for (int i = 0; i < isSelected.length; i++) {
                                   isSelected[i] = i == index;
-                                  if (index == 0){
+                                  if (index == 0) {
                                     married = true;
-                                  }else{
+                                  } else {
                                     married = false;
                                   }
                                 }
@@ -348,95 +338,95 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           height: 30,
                         ),
 
-                        married ?
-                        Column(
-                          children: [
-                            CommonCardUserRow(rowHeading: '', rowValue: 'SUPPOSE DETAILS :'),
+                        married
+                            ? Column(
+                                children: [
+                                  CommonCardUserRow(rowHeading: '', rowValue: 'SUPPOSE DETAILS :'),
 
-                            //Suppose Name
-                            TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'Suppose Full Name',
-                                hintText: "W M Lorem ipsum",
-                                hintStyle: TextStyle(
-                                  color: Colors.black54.withOpacity(0.3),
-                                ),
-                                labelStyle: _labelStyle,
-                              ),
-                              onChanged: (value) {
-                                // _centerName = value;
-                              },
-                            ),
+//Suppose Name
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                      labelText: 'Suppose Full Name',
+                                      hintText: "W M Lorem ipsum",
+                                      hintStyle: TextStyle(
+                                        color: Colors.black54.withOpacity(0.3),
+                                      ),
+                                      labelStyle: _labelStyle,
+                                    ),
+                                    onChanged: (value) {
+// _centerName = value;
+                                    },
+                                  ),
 
-                            const SizedBox(
-                              height: 20,
-                            ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
 
-                            //Suppose Job details
-                            TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'Suppose Job',
-                                hintText: "Title of the job",
-                                hintStyle: TextStyle(
-                                  color: Colors.black54.withOpacity(0.3),
-                                ),
-                                labelStyle: _labelStyle,
-                              ),
-                              onChanged: (value) {
-                                // _centerName = value;
-                              },
-                            ),
+//Suppose Job details
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                      labelText: 'Suppose Job',
+                                      hintText: "Title of the job",
+                                      hintStyle: TextStyle(
+                                        color: Colors.black54.withOpacity(0.3),
+                                      ),
+                                      labelStyle: _labelStyle,
+                                    ),
+                                    onChanged: (value) {
+// _centerName = value;
+                                    },
+                                  ),
 
-                            const SizedBox(
-                              height: 20,
-                            ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
 
-                            //Suppose Land number
-                            TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'Suppose Phone Number',
-                                hintText: "0112123456",
-                                hintStyle: TextStyle(
-                                  color: Colors.black54.withOpacity(0.3),
-                                ),
-                                labelStyle: _labelStyle,
-                              ),
-                              keyboardType: TextInputType.phone,
-                              onChanged: (value) {
-                                // _centerName = value;
-                              }, 
-                            ),
+//Suppose Land number
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                      labelText: 'Suppose Phone Number',
+                                      hintText: "0112123456",
+                                      hintStyle: TextStyle(
+                                        color: Colors.black54.withOpacity(0.3),
+                                      ),
+                                      labelStyle: _labelStyle,
+                                    ),
+                                    keyboardType: TextInputType.phone,
+                                    onChanged: (value) {
+// _centerName = value;
+                                    },
+                                  ),
 
-                            const SizedBox(
-                              height: 20,
-                            ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
 
-                            //Customer ID card
-                            TextFormField(
-                              decoration: InputDecoration(
-                                labelText: 'Suppose Identity Card Number',
-                                hintText: "94022930V",
-                                hintStyle: TextStyle(
-                                  color: Colors.black54.withOpacity(0.3),
-                                ),
-                                labelStyle: _labelStyle,
-                              ),
-                              keyboardType: TextInputType.text,
-                              onChanged: (value) {
-                                // _centerName = value;
-                              },
-                            ),
+//Customer ID card
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                      labelText: 'Suppose Identity Card Number',
+                                      hintText: "94022930V",
+                                      hintStyle: TextStyle(
+                                        color: Colors.black54.withOpacity(0.3),
+                                      ),
+                                      labelStyle: _labelStyle,
+                                    ),
+                                    keyboardType: TextInputType.text,
+                                    onChanged: (value) {
+// _centerName = value;
+                                    },
+                                  ),
 
-                            const SizedBox(
-                              height: 20,
-                            ),
-                          ],
-                        )
-                        : Container(),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                ],
+                              )
+                            : Container(),
 
                         CommonCardUserRow(rowHeading: '', rowValue: 'CONTACT DETAILS :'),
 
-                        //Customer Land number
+//Customer Land number
                         TextFormField(
                           decoration: InputDecoration(
                             labelText: 'Land Phone Number',
@@ -448,7 +438,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.phone,
                           onChanged: (value) {
-                            // _centerName = value;
+// _centerName = value;
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -462,7 +452,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           height: 20,
                         ),
 
-                        //Customer Mobile
+//Customer Mobile
                         TextFormField(
                           decoration: InputDecoration(
                             labelText: 'Mobile Phone Number',
@@ -474,7 +464,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.phone,
                           onChanged: (value) {
-                            // _centerName = value;
+// _centerName = value;
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -488,9 +478,29 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           height: 20,
                         ),
 
+//Customer Office Number
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Office Number',
+                            hintText: "0112123456",
+                            hintStyle: TextStyle(
+                              color: Colors.black54.withOpacity(0.3),
+                            ),
+                            labelStyle: _labelStyle,
+                          ),
+                          keyboardType: TextInputType.phone,
+                          onChanged: (value) {
+// _centerName = value;
+                          },
+                        ),
+
+                        const SizedBox(
+                          height: 20,
+                        ),
+
                         CommonCardUserRow(rowHeading: '', rowValue: 'BANK DETAILS :'),
 
-                        //Bank Name
+//Bank Name
                         TextFormField(
                           decoration: InputDecoration(
                             labelText: 'Bank Name',
@@ -502,7 +512,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.text,
                           onChanged: (value) {
-                            // _centerName = value;
+// _centerName = value;
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -516,7 +526,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           height: 20,
                         ),
 
-                        //Bank Account Number
+//Bank Account Number
                         TextFormField(
                           decoration: InputDecoration(
                             labelText: 'Bank Account Number',
@@ -528,7 +538,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
-                            // _centerName = value;
+// _centerName = value;
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -542,11 +552,11 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           height: 20,
                         ),
 
-                        //Branch Name
+//Branch Name
                         TextFormField(
                           decoration: InputDecoration(
                             labelText: 'Branch Name',
-                            hintText: "Anamaduwa",
+                            hintText: "Account opened branch name",
                             hintStyle: TextStyle(
                               color: Colors.black54.withOpacity(0.3),
                             ),
@@ -554,7 +564,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.text,
                           onChanged: (value) {
-                            // _centerName = value;
+// _centerName = value;
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -568,16 +578,99 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           height: 20,
                         ),
 
+                        CommonCardUserRow(rowHeading: '', rowValue: 'OFFICIAL DATA :'),
 
+//Branch Name
+                        TextFormField(
+                          decoration: InputDecoration(
+                            labelText: 'Electricity Bill Number',
+                            hintText: "Account number of CEB",
+                            hintStyle: TextStyle(
+                              color: Colors.black54.withOpacity(0.3),
+                            ),
+                            labelStyle: _labelStyle,
+                          ),
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) {
+// _centerName = value;
+                          },
+                          validator: (String? value) {
+                            if (value != null && value.isEmpty) {
+                              return 'Electricity bill number required!';
+                            }
+                            return null;
+                          },
+                        ),
 
+                        const SizedBox(
+                          height: 30,
+                        ),
+
+                        GestureDetector(
+													onTap: () async {
+														showModalBottomSheet(
+															backgroundColor: Colors.transparent,
+															context: context,
+															builder: (BuildContext context) {
+																return Container(
+																	height: MediaQuery.of(context).size.height,
+																	padding: const EdgeInsets.all(20),
+																	decoration: const BoxDecoration(
+																		color: Colors.white,
+																		borderRadius: BorderRadius.only(
+																				topLeft: Radius.circular(30),
+																				topRight: Radius.circular(30)),
+																	),
+																	child: SelectMemberGroup(
+                                    onTap: () {
+                                      print('ss');
+                                    },
+                                  ),
+																);
+															},
+														);
+													},
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 30.0),
+                            margin: const EdgeInsets.only(top: 20, bottom: 20),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.green,
+                            ),
+                            child: const Text(
+                              'Add this member to a Group',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Inter',
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+
+// DropdownButton(
+//   items: centersList.map((dynamic center) {
+//     return DropdownMenuItem<String>(
+//       value: center['id'].toString(),
+//       child: Text(center['center_name'].toString()),
+//     );
+//   }).toList(),
+//   hint: const Text("Select a Center"),
+//   value: _centerId,
+//   onChanged: (String? value) {
+//     setState(() {
+//       // _centerId = value!;
+//     },);
+//   },
+// )
                       ]),
                     )
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
-        )
-      ),
+            ],
+          )),
     );
   }
 }

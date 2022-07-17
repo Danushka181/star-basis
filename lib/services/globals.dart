@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // const String base_url = "http://10.0.2.2:8000/api/";
 // const String base_url = "https://reqres.in/api/";
-const String base_url = "http://bb57-2402-4000-2380-c5a6-4cf3-eef7-9524-af95.ngrok.io/api/";
+const String base_url = "https://881a-2402-4000-2380-c5a6-1de8-dac2-636-4892.ngrok.io/api/";
 
 
 const Map<String, String> headers = {"Content-Type": "Application/json"};
