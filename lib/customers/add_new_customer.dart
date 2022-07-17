@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:star_basis/customers/select_member_group.dart';
@@ -21,6 +23,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
   late bool married = true;
   late List<bool> gender = [true, false];
   late bool sexType = true;
+  late String selectedGroup  = '0';
 
 // birth day date select adding here
   TextEditingController intialdateval = TextEditingController();
@@ -622,9 +625,13 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
 																				topRight: Radius.circular(30)),
 																	),
 																	child: SelectMemberGroup(
-                                    onTap: () {
-                                      print('ss');
+                                    onTap: (String value) {
+                                      setState(() {
+                                        selectedGroup = value.toString();
+                                        Navigator.of(context).pop();
+                                      });
                                     },
+                                    activeColor: selectedGroup,
                                   ),
 																);
 															},
@@ -637,15 +644,29 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.green,
                             ),
-                            child: const Text(
-                              'Add this member to a Group',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'Inter',
-                                fontSize: 16,
-                              ),
-                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Add this member to a Group',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'Inter',
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const SizedBox(width: 15,),
+                                selectedGroup == '0' ?
+                                const Icon(Icons.add,color: Colors.white,)
+                                :
+                                const Icon(
+                                    Icons.check_box,
+                                    color:Colors.white
+                                ),
+                              ],
+                            )
                           ),
                         ),
 
