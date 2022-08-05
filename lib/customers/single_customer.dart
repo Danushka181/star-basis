@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:star_basis/widgets/common_card_details_row.dart';
 
 import '../screens/login_page.dart';
@@ -87,14 +88,14 @@ class _SingleCustomerState extends State<SingleCustomer> {
               children: [
                 const SizedBox(height: 20,),
                 CommonCardUserRow(rowHeading: 'ADDRESS:', rowValue: _customerDetails['c_address'].toString()),
-                CommonCardUserRow(rowHeading: 'DATE OF BIRTH :', rowValue: _customerDetails['c_bday'].toString()),
+                CommonCardUserRow(rowHeading: 'DATE OF BIRTH :', rowValue: DateFormat('yyyy-MM-dd').format(DateTime.parse(_customerDetails['c_bday'].toString()).toLocal())),
                 CommonCardUserRow(rowHeading: 'AGE :', rowValue: _customerDetails['c_age'].toString()),
                 CommonCardUserRow(rowHeading: 'ID CARD NUMBER  :', rowValue: _customerDetails['c_id_number'].toString()),
                 CommonCardUserRow(rowHeading: 'MOBILE NUMBER :', rowValue: _customerDetails['c_mobile_number'].toString()),
                 CommonCardUserRow(rowHeading: 'HOME NUMBER :', rowValue: _customerDetails['c_land_number'].toString()),
                 CommonCardUserRow(rowHeading: 'MONTHLY INCOME :', rowValue: 'Rs '+ _customerDetails['c_month_income'].toString()),
-                CommonCardUserRow(rowHeading: 'GENDER :', rowValue: _customerDetails['c_gender'].toString()),
-                CommonCardUserRow(rowHeading: 'MARITAL STATE :', rowValue: _customerDetails['c_married'].toString()),
+                CommonCardUserRow(rowHeading: 'GENDER :', rowValue: _customerDetails['c_gender'] == '1' ? "Male" : 'Female' ),
+                CommonCardUserRow(rowHeading: 'MARITAL STATE :', rowValue: _customerDetails['c_married'] == '1' ? "Married" : "Single"),
                 CommonCardUserRow(rowHeading: 'BANK ACCOUNT NUMBER :', rowValue: _customerDetails['c_bank_account'].toString()),
                 CommonCardUserRow(rowHeading: 'ELECTRICITY BILL NUMBER :', rowValue: _customerDetails['c_ceb_number'].toString()),
               ],

@@ -32,23 +32,27 @@ class _SecondTabState extends State<SecondTab> {
 
   getAllCustomersList() async {
     try{
-      http.Response response = await CustomersService.allCustomers();
-      Map responseMap = jsonDecode(response.body);
-      // print(responseMap);
+      var response = await CustomersService.allCustomers();
       if (response.statusCode == 200) {
-        setState(() {
-          _customerList = responseMap['customers'];
-          _allCustomers = _customerList;
-          _customerCount= _allCustomers.length.toString();
-          isLoading = false;
-        });
+        if( response.data['customers'].length != 0){
+          setState(() {
+            _customerList = response.data['customers'];
+            _allCustomers = _customerList;
+            _customerCount= _allCustomers.length.toString();
+            isLoading = false;
+          });
+        }else{
+          Route route =
+          MaterialPageRoute(builder: (context) => const AddNewCustomers());
+          Navigator.pushReplacement(context, route);
+        }
       } else {
         if (response.statusCode == 401) {
           Route route =
           MaterialPageRoute(builder: (context) => const LoginPage());
           Navigator.pushReplacement(context, route);
         } else {
-          errorSnackBar(context, responseMap['error']);
+          errorSnackBar(context, response['error']);
         }
       }
 
