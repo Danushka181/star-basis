@@ -38,6 +38,8 @@ dependencies:
   getwidget: ^2.0.4
   intl: ^0.17.0
   url_launcher: ^5.7.10
+  image_picker:
+  dio: ^4.0.6
 
 
 dev_dependencies:
@@ -68,6 +70,7 @@ flutter:
   assets:
      - assets/images/Star-basis.png
      - assets/images/pngegg.png
+     - assets/images/add-icon.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

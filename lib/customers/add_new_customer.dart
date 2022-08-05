@@ -1,12 +1,18 @@
-import 'dart:math';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:star_basis/customers/select_member_group.dart';
+import 'package:http/http.dart' as http;
+import 'package:star_basis/services/globals.dart';
+import 'package:star_basis/services/customers_services.dart';
 
+import '../screens/login_page.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/common_card_details_row.dart';
 import '../widgets/custom_page_heading.dart';
+import 'image_select_for_update.dart';
 
 class AddNewCustomers extends StatefulWidget {
   const AddNewCustomers({Key? key}) : super(key: key);
@@ -17,6 +23,9 @@ class AddNewCustomers extends StatefulWidget {
 
 class _AddNewCustomersState extends State<AddNewCustomers> {
   final _formKey = GlobalKey<FormState>();
+  // adding group message after btn click
+  late String _btnText   = 'Add Customer';
+  late bool isLoading = false;
 
   late String _date;
   late List<bool> isSelected = [true, false];
@@ -24,6 +33,36 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
   late List<bool> gender = [true, false];
   late bool sexType = true;
   late String selectedGroup  = '0';
+
+//  Form Fields
+  late String cName;
+  late String cAddress;
+  late String cBday;
+  late String cAge;
+  late String cIdNumber;
+  late String cMobileNumber;
+  late String cLandNumber;
+  late String cMonthIncome;
+  late String cCebNumber;
+  String? cJob;
+  String? cOfficeNumber;
+  late String cGender = '1';
+  late String cMarried = '1';
+  late String cSupName = '-';
+  late String cSupJob = '-';
+  late String cSupPhone = '-';
+  late String cSupIdNumber = '-';
+  late String cBankAccount;
+  late String cBankName;
+  late String cBranchName;
+  // Documents
+  File? cIdCopy;
+  File? cIdCopyBack;
+  File? cCebBill;
+  File? cBankBook;
+  // assigned Group
+  String? cGroup;
+
 
 // birth day date select adding here
   TextEditingController intialdateval = TextEditingController();
@@ -34,7 +73,8 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
     if (picked != null) {
       setState(() => {
             _date = picked.toString(),
-            intialdateval.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(_date).toLocal())
+            intialdateval.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(_date).toLocal()),
+            cBday = intialdateval.text,
           });
     }
   }
@@ -81,7 +121,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                             labelStyle: _labelStyle,
                           ),
                           onChanged: (value) {
-// _centerName = value;
+                            cName = value.toString();
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -106,7 +146,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                             labelStyle: _labelStyle,
                           ),
                           onChanged: (value) {
-// _centerName = value;
+                            cAddress = value.toString();
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -135,7 +175,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           autocorrect: false,
                           controller: intialdateval,
                           onSaved: (value) {
-                            _date = value!.toString();
+                            _date = value.toString();
                           },
                           onTap: () {
                             _selectDate();
@@ -166,7 +206,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
-// _centerName = value;
+                            cAge = value.toString();
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -192,7 +232,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.text,
                           onChanged: (value) {
-// _centerName = value;
+                            cIdNumber = value.toString();
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -218,7 +258,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                             ),
                             keyboardType: TextInputType.text,
                             onChanged: (value) {
-// _centerName = value;
+                              cJob = value.toString();
                             }),
 
                         const SizedBox(
@@ -237,7 +277,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.phone,
                           onChanged: (value) {
-// _centerName = value;
+                            cMonthIncome = value.toString();
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -282,8 +322,10 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                                   gender[i] = i == index;
                                   if (index == 0) {
                                     sexType = true;
+                                    cGender = '1';
                                   } else {
                                     sexType = false;
+                                    cGender = '0';
                                   }
                                 }
                               });
@@ -327,8 +369,10 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                                   isSelected[i] = i == index;
                                   if (index == 0) {
                                     married = true;
+                                    cMarried = '1';
                                   } else {
                                     married = false;
+                                    cMarried = '0';
                                   }
                                 }
                               });
@@ -357,7 +401,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                                       labelStyle: _labelStyle,
                                     ),
                                     onChanged: (value) {
-// _centerName = value;
+                                      cSupName = value.toString();
                                     },
                                   ),
 
@@ -376,7 +420,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                                       labelStyle: _labelStyle,
                                     ),
                                     onChanged: (value) {
-// _centerName = value;
+                                      cSupJob = value.toString();
                                     },
                                   ),
 
@@ -396,7 +440,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                                     ),
                                     keyboardType: TextInputType.phone,
                                     onChanged: (value) {
-// _centerName = value;
+                                      cSupPhone = value.toString();
                                     },
                                   ),
 
@@ -416,7 +460,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                                     ),
                                     keyboardType: TextInputType.text,
                                     onChanged: (value) {
-// _centerName = value;
+                                      cSupIdNumber = value.toString();
                                     },
                                   ),
 
@@ -441,7 +485,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.phone,
                           onChanged: (value) {
-// _centerName = value;
+                            cLandNumber = value.toString();
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -467,7 +511,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.phone,
                           onChanged: (value) {
-// _centerName = value;
+                            cMobileNumber = value.toString();
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -493,7 +537,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.phone,
                           onChanged: (value) {
-// _centerName = value;
+                            cOfficeNumber = value.toString();
                           },
                         ),
 
@@ -515,7 +559,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.text,
                           onChanged: (value) {
-// _centerName = value;
+                            cBankName = value.toString();
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -541,7 +585,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
-// _centerName = value;
+                            cBankAccount = value.toString();
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -567,7 +611,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.text,
                           onChanged: (value) {
-// _centerName = value;
+                            cBranchName = value.toString();
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -595,7 +639,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
-// _centerName = value;
+                            cCebNumber = value.toString();
                           },
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {
@@ -628,6 +672,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                                     onTap: (String value) {
                                       setState(() {
                                         selectedGroup = value.toString();
+                                        cGroup = selectedGroup;
                                         Navigator.of(context).pop();
                                       });
                                     },
@@ -642,7 +687,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                             margin: const EdgeInsets.only(top: 20, bottom: 20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Colors.green,
+                              color: Colors.blueGrey,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -670,21 +715,138 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                           ),
                         ),
 
-// DropdownButton(
-//   items: centersList.map((dynamic center) {
-//     return DropdownMenuItem<String>(
-//       value: center['id'].toString(),
-//       child: Text(center['center_name'].toString()),
-//     );
-//   }).toList(),
-//   hint: const Text("Select a Center"),
-//   value: _centerId,
-//   onChanged: (String? value) {
-//     setState(() {
-//       // _centerId = value!;
-//     },);
-//   },
-// )
+                        const SizedBox(
+                          height: 10,
+                        ),
+
+                        CommonCardUserRow(rowHeading: '', rowValue: '01. Identity card back and front :'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ImageSelectForUpdate(
+                              onTap: (image) {
+                                setState((){
+                                  cIdCopy = image;
+                                });
+                              },
+                              imageName: 'Identy Front Side',
+                            ),
+                            ImageSelectForUpdate(
+                              onTap: (value) {
+                                setState((){
+                                  cIdCopyBack = value;
+                                });
+                              },
+                              imageName: 'Identy back Side',
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        CommonCardUserRow(rowHeading: '', rowValue: '02. Electricity Bill & Bank Book :'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ImageSelectForUpdate(
+                              onTap: (value) {
+                                setState((){
+                                  cCebBill = value;
+                                });
+                              },
+                              imageName: 'Electricity Bill',
+                            ),
+
+                            ImageSelectForUpdate(
+                              onTap: (value) {
+                                setState((){
+                                  cBankBook = value;
+                                });
+                              },
+                              imageName: 'Bank Book',
+                            ),
+
+                          ],
+                        ),
+
+                        const SizedBox(
+                          height: 30,
+                        ),
+
+                        const SizedBox(
+                          height: 60,
+                        ),
+
+                        Column(
+                          children: [
+                            const Text(
+                                'Please double check all the data are correct before to submit this form!',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 16,
+                                ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.lightGreen,
+                                minimumSize: const Size.fromHeight(60),
+                              ),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right:30,left: 20),
+                                      child: Text(
+                                        _btnText,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ),
+                                    isLoading ? const SizedBox(
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                      width: 30,
+                                      height: 30,
+                                    ): const Text(''),
+                                  ]),
+                              onPressed: () {
+                                // It returns true if the form is valid, otherwise returns false
+                                  if (_formKey.currentState!.validate()) {
+                                    if(selectedGroup.isNotEmpty){
+                                      if(cIdCopy != null && cIdCopyBack != null && cCebBill != null && cBankBook != null){
+                                        setState(() {
+                                          _btnText = 'Adding customer..';
+                                          isLoading = true;
+                                        });
+                                        addCustomers( cName, cAddress, _date,cAge,cIdNumber,cMobileNumber,cLandNumber,
+                                            cMonthIncome,cCebNumber,cJob,cOfficeNumber,cGender,cMarried,cSupName,
+                                            cSupJob,cSupPhone,cSupIdNumber,cBankAccount,cBankName,cBranchName,cIdCopy,
+                                            cIdCopyBack,cCebBill,cBankBook,cGroup);
+                                      }else{
+                                        errorSnackBar(context, 'Please add all documents before Submit!');
+                                      }
+                                    }else{
+                                      errorSnackBar(context, 'Please add customer group for this customer!');
+                                    }
+                                  }else{
+                                    errorSnackBar(context, 'Please fil all required fields!');
+                                  }
+                              },
+                            )
+                          ],
+                        ),
+
                       ]),
                     )
                   ],
@@ -693,5 +855,81 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
             ],
           )),
     );
+  }
+
+  addCustomers(
+      cName,
+      cAddress,
+      cBday,
+      cAge,
+      cIdNumber,
+      cMobileNumber,
+      cLandNumber,
+      cMonthIncome,
+      cCebNumber,
+      cJob,
+      cOfficeNumber,
+      cGender,
+      cMarried,
+      cSupName,
+      cSupJob,
+      cSupPhone,
+      cSupIdNumber,
+      cBankAccount,
+      cBankName,
+      cBranchName,
+      cIdCopy,
+      cIdCopyBack,
+      cCebBill,
+      cBankBook,
+      cGroup, ) async {
+
+    var response = await CustomersService.addCustomersToServer(
+        cName,
+        cAddress,
+        cBday,
+        cAge,
+        cIdNumber,
+        cMobileNumber,
+        cLandNumber,
+        cMonthIncome,
+        cCebNumber,
+        cJob,
+        cOfficeNumber,
+        cGender,
+        cMarried,
+        cSupName,
+        cSupJob,
+        cSupPhone,
+        cSupIdNumber,
+        cBankAccount,
+        cBankName,
+        cBranchName,
+        cIdCopy,
+        cIdCopyBack,
+        cCebBill,
+        cBankBook,
+        cGroup
+    );
+    if (response.statusCode == 200) {
+      successSnackBar(context, response.data['message']);
+      setState(() {
+        isLoading = false;
+        _btnText = 'Add Customer';
+      });
+      // _formKey.currentState?.reset();
+    } else {
+      setState(() {
+        isLoading = false;
+        _btnText = 'Add Customer';
+      });
+      if (response.statusCode == 500) {
+        Route route =  MaterialPageRoute(builder: (context) => const LoginPage());
+        Navigator.pushReplacement(context, route);
+      } else {
+        Map<String,dynamic> errors  = response.data;
+        errorSnackBar(context, errors.values.first[0].toString());
+      }
+    }
   }
 }

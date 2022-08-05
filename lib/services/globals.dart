@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 // const String base_url = "http://10.0.2.2:8000/api/";
 // const String base_url = "https://reqres.in/api/";
-const String base_url = "http://bd89-2402-4000-2380-c5a6-4167-1c79-a789-ecc6.ngrok.io/api/";
-
+const String base_url = "https://58cd-2402-4000-2380-2c85-3955-6960-70fc-b0e2.ngrok.io/api/";
 
 const Map<String, String> headers = {"Content-Type": "Application/json"};
-
 
 //Error snack bar for show errors
 errorSnackBar(BuildContext context, String text) {
