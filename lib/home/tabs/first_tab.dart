@@ -3,6 +3,7 @@ import 'package:star_basis/centers/centers_page.dart';
 import 'package:star_basis/loans/loan_dashboard.dart';
 
 import '../../customer_groups/customer_groups.dart';
+import '../../loan_products/loan_products.dart';
 import '../../widgets/big_text_widget.dart';
 import '../../widgets/common_card_one.dart';
 
@@ -39,6 +40,11 @@ class _FirstTabState extends State<FirstTab> {
                 child: const CommonCardOne(iconName: Icons.touch_app, cardSubHeading: 'View, Create and approve Loans', cardHeading: 'Loan Process',),
             ),
             const SizedBox(height: 10,),
+            GestureDetector(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const LoanProducts())),
+              child: const CommonCardOne(iconName: Icons.widgets, cardSubHeading: 'Add, Edit or Delete Loan products', cardHeading: 'Loan Products',),
+            ),
+            const CommonCardOne(iconName: Icons.trending_up, cardSubHeading: 'Add Loan Rates for future loans', cardHeading: 'Loan Rates',),
             const Padding(
               padding: EdgeInsets.only(left:20,top: 30,right: 20,bottom: 5),
               child: BigTextWidget(content: 'Other Data..',fontSize: 25, fontWeight: FontWeight.w600, colorCode: Colors.grey,),
@@ -51,9 +57,6 @@ class _FirstTabState extends State<FirstTab> {
               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const CustomerGroups())),
               child: const CommonCardOne(iconName: Icons.group, cardSubHeading: 'Add, Edit or Delete Customer Groups', cardHeading: 'Customer Groups',),
             ),
-
-            const CommonCardOne(iconName: Icons.widgets, cardSubHeading: 'Add, Edit or Delete Loan products', cardHeading: 'Loan Products',),
-            const CommonCardOne(iconName: Icons.trending_up, cardSubHeading: 'Add Loan Rates for future loans', cardHeading: 'Loan Rates',),
           ],
         ),
       ),

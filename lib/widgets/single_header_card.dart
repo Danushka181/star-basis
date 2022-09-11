@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import 'big_text_widget.dart';
-
+import '../services/actions.dart';
 
 class SingleHeaderCard extends StatelessWidget {
   String smallHeading;
@@ -10,16 +8,13 @@ class SingleHeaderCard extends StatelessWidget {
   String phoneNumber;
   String nameHeading;
 
-  SingleHeaderCard({Key? key, required this.headerLargeText, required this.nameHeading, required this.phoneNumber, required this.smallHeading}) : super(key: key);
-
-  _launchCaller(String phoneNumber) async {
-    var callTo = "tel:"+phoneNumber;
-    if (await canLaunch(callTo)) {
-      await launch(callTo);
-    } else {
-      throw 'Could not launch $callTo';
-    }
-  }
+  SingleHeaderCard({
+    Key? key,
+    required this.headerLargeText,
+    required this.nameHeading,
+    required this.phoneNumber,
+    required this.smallHeading
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +55,7 @@ class SingleHeaderCard extends StatelessWidget {
                       textAlign: TextAlign.left,
                     ),
                     Text(
-                      '#'+headerLargeText,
+                      '#$headerLargeText',
                       style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 63,
@@ -82,16 +77,16 @@ class SingleHeaderCard extends StatelessWidget {
               ),
           ),
           Positioned(
-            child: FloatingActionButton(
-              elevation: 4,
-              child:const Icon(Icons.call,color: Colors.green), //child widget inside this button
-              backgroundColor: Colors.white,
-              onPressed: () {
-                _launchCaller(phoneNumber);
-              }
-            ),
             bottom: 20,
             right: 20,
+            child: FloatingActionButton(
+              elevation: 4, //child widget inside this button
+              backgroundColor: Colors.white,
+              onPressed: () {
+                ActionsList.makePhoneCall(phoneNumber);
+              },
+              child:const Icon(Icons.call,color: Colors.green)
+            ),
           ),
         ],
       ),

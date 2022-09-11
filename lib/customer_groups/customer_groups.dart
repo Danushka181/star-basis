@@ -22,6 +22,7 @@ class CustomerGroups extends StatefulWidget {
 
 class _CustomerGroupsState extends State<CustomerGroups> {
   bool isLoading = true;
+  late String _customerCount = '0';
   late List groupList;
   late List allGroupList;
   late List searchItems;
@@ -33,15 +34,17 @@ class _CustomerGroupsState extends State<CustomerGroups> {
       setState(() {
         groupList = responseMap['groups'];
         allGroupList = groupList;
+        _customerCount = allGroupList.length.toString();
         isLoading = false;
       });
     } else {
       if (response.statusCode == 401) {
-        Route route =
-        MaterialPageRoute(builder: (context) => const LoginPage());
+        Route route = MaterialPageRoute(builder: (context) => const LoginPage());
         Navigator.pushReplacement(context, route);
       } else {
         errorSnackBar(context, responseMap['error']);
+        Route route = MaterialPageRoute(builder: (context) => const AddNewGroup());
+        Navigator.pushReplacement(context, route);
       }
     }
   }
@@ -110,12 +113,43 @@ class _CustomerGroupsState extends State<CustomerGroups> {
               Padding(
                 padding: const EdgeInsets.only(
                     left: 20, top: 30, right: 20, bottom: 5),
-                child: BigTextWidget(
-                  content: 'Groups',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  colorCode: Colors.black54.withOpacity(0.5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        BigTextWidget(
+                          content: 'Centers List',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          colorCode: Colors.black54.withOpacity(0.5),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(left:10,top: 5,right: 10,bottom: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.0),
+                            color: Colors.black54,
+                          ),
+                          child: Text(
+                              _customerCount,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Inter',
+                              )
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
+              ),
+              const SizedBox(
+                height: 20,
               ),
               isLoading == false
                   ? ListView.builder(

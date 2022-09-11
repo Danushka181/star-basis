@@ -23,6 +23,7 @@ class CentersPage extends StatefulWidget {
 
 class _CentersPageState extends State<CentersPage> {
   bool isLoading = true;
+  late String _customerCount = '0';
   late List centersList;
   late List allCentersList;
   late List searchItems;
@@ -36,6 +37,7 @@ class _CentersPageState extends State<CentersPage> {
       setState(() {
         centersList = responseMap['centers'];
         allCentersList = centersList;
+        _customerCount = allCentersList.length.toString();
         isLoading = false;
       });
     } else {
@@ -111,12 +113,43 @@ class _CentersPageState extends State<CentersPage> {
               Padding(
                 padding: const EdgeInsets.only(
                     left: 20, top: 30, right: 20, bottom: 5),
-                child: BigTextWidget(
-                  content: 'Centers',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  colorCode: Colors.black54.withOpacity(0.5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        BigTextWidget(
+                          content: 'Centers List',
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          colorCode: Colors.black54.withOpacity(0.5),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(left:10,top: 5,right: 10,bottom: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.0),
+                            color: Colors.black54,
+                          ),
+                          child: Text(
+                              _customerCount,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Inter',
+                              )
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
+              ),
+              const SizedBox(
+                height: 30,
               ),
               isLoading == false
                   ? ListView.builder(

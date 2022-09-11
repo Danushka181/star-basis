@@ -33,6 +33,7 @@ class _SecondTabState extends State<SecondTab> {
   getAllCustomersList() async {
     try{
       var response = await CustomersService.allCustomers();
+      // print(response);
       if (response.statusCode == 200) {
         if( response.data['customers'].length != 0){
           setState(() {
@@ -170,6 +171,9 @@ class _SecondTabState extends State<SecondTab> {
                   ],
                 ),
               ),
+              const SizedBox(
+                height: 20,
+              ),
               // Progress bar
               isLoading == false ? ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
@@ -224,6 +228,7 @@ class _SecondTabState extends State<SecondTab> {
               Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => const AddNewCustomers()));
             },
           ),
-        ));
+        ),
+    );
   }
 }
