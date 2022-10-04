@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
-import 'dart:convert';
 import 'globals.dart';
 
 class LoanProductsData {
@@ -12,16 +11,16 @@ class LoanProductsData {
       Response response = await Dio().get(
         url,
         options: dio.Options(
+            validateStatus: (_) => true,
             headers: {
-              'Content-Type': 'application/json',
+              'HttpHeaders.contentTypeHeader': 'application/json',
               'Accept': 'application/json',
               'Authorization': 'Bearer $token',
             }
         ),
       );
       return response;
-    } catch (e){
-      // print(e);
+    } on DioError catch(e){
       return e;
     }
 
@@ -29,33 +28,38 @@ class LoanProductsData {
 
   // create loan product
   static Future createLoanProducts(
-      productName,
-      rate,
-      documentCharge,
-      maxLoanAmount
-      ) async {
+    productName,
+    rate,
+    documentCharge,
+    maxLoanAmount
+    ) async {
+
+    const url = '${base_url}loans-products/create';
+    // set form data before send to backend
+    Map<String,dynamic> data = {
+      'loan_product_name':productName,
+      'rate':rate,
+      'document_charge': documentCharge,
+      'max_loan_amount':maxLoanAmount
+    };
+
     try{
-      var dioRequest = dio.Dio();
-      dioRequest.options.baseUrl = base_url;
       String token = await getSavedToken();
-      dioRequest.options.headers = {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      };
-      Map<String,dynamic> data = {
-        "loan_product_name" :productName,
-        "rate" :rate,
-        "document_charge" : documentCharge,
-        "max_loan_amount" : maxLoanAmount,
-      };
-      FormData formData = dio.FormData.fromMap(data); // add all data to form
-      Response response = await dioRequest.post(
-        'loans-products/create',
-        data: formData,
+      Response response = await Dio().post(
+        url,
+        options: dio.Options(
+            validateStatus: (_) => true,
+            headers: {
+              'HttpHeaders.contentTypeHeader': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': 'Bearer $token',
+            }
+        ),
+        data:data
       );
       return response;
     } catch (err) {
-      print('ERROR  $err');
+      return err;
     }
   }
 }

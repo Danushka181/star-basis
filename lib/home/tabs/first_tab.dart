@@ -36,7 +36,7 @@ class _FirstTabState extends State<FirstTab> {
               child: BigTextWidget(content: 'Loans..',fontSize: 25, fontWeight: FontWeight.w600, colorCode: Colors.grey,),
             ),
             GestureDetector(
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const LoanDashboard())),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => LoanDashboard(activeTab: 0,))),
                 child: const CommonCardOne(iconName: Icons.touch_app, cardSubHeading: 'View, Create and approve Loans', cardHeading: 'Loan Process',),
             ),
             const SizedBox(height: 10,),
@@ -44,7 +44,7 @@ class _FirstTabState extends State<FirstTab> {
               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const LoanProducts())),
               child: const CommonCardOne(iconName: Icons.widgets, cardSubHeading: 'Add, Edit or Delete Loan products', cardHeading: 'Loan Products',),
             ),
-            const CommonCardOne(iconName: Icons.trending_up, cardSubHeading: 'Add Loan Rates for future loans', cardHeading: 'Loan Rates',),
+            const CommonCardOne(iconName: Icons.trending_up, cardSubHeading: 'View all Loans Statistic', cardHeading: 'Loan Statistic',),
             const Padding(
               padding: EdgeInsets.only(left:20,top: 30,right: 20,bottom: 5),
               child: BigTextWidget(content: 'Other Data..',fontSize: 25, fontWeight: FontWeight.w600, colorCode: Colors.grey,),

@@ -7,8 +7,10 @@ class CommonCardTwo extends StatelessWidget {
   final String cardHeading;
   final String cardSubHeading;
   final String loanAmount;
+  final String loanId;
+  final String createdAt;
 
-  const CommonCardTwo({Key? key, required this.cardHeading, required this.cardSubHeading, required this.loanAmount}) : super(key: key);
+  const CommonCardTwo({Key? key, required this.cardHeading, required this.cardSubHeading, required this.loanAmount, required this.loanId, required this.createdAt}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,24 +30,22 @@ class CommonCardTwo extends StatelessWidget {
         elevation: 0,
         child: ListTile(
           selectedColor: Colors.lightGreen.withOpacity(0.1),
-          title: Container(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const BigTextWidget(content: '#24', fontSize: 22, colorCode: Colors.lightGreen,fontWeight: FontWeight.w400,),
-                    BigTextWidget(content: '2021-02-06', fontSize: 12, colorCode: Colors.black54.withOpacity(0.5), fontWeight: FontWeight.w500,),
-                  ],
-                ),
-                //loan owner
-                Row(
-                  children: [
-                    BigTextWidget(content: cardHeading,fontSize: 17, colorCode: Colors.black54, fontWeight: FontWeight.w600,)
-                  ],
-                )
-              ],
-            ),
+          title: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BigTextWidget(content: '#$loanId', fontSize: 22, colorCode: Colors.lightGreen,fontWeight: FontWeight.w400,),
+                  BigTextWidget(content: createdAt, fontSize: 12, colorCode: Colors.black54.withOpacity(0.5), fontWeight: FontWeight.w500,),
+                ],
+              ),
+              //loan owner
+              Row(
+                children: [
+                  BigTextWidget(content: cardHeading,fontSize: 17, colorCode: Colors.black54, fontWeight: FontWeight.w600,)
+                ],
+              )
+            ],
           ),
           subtitle: Container(
             margin: const EdgeInsets.only(top: 5),
@@ -73,7 +73,7 @@ class CommonCardTwo extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    loanAmount+' /=',
+                    '$loanAmount /=',
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       color: Colors.white,

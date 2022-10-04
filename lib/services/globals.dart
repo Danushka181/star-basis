@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 const String base_url = "http://10.0.2.2:8000/api/";
 // const String base_url = "https://reqres.in/api/";
@@ -18,6 +17,16 @@ errorSnackBar(BuildContext context, String text) {
       )
   );
 }
+//Notify snack bar for show errors
+notifySnackBar(BuildContext context, String text) {
+  ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.black,
+        content: Text(text),
+        duration: const Duration(seconds: 4),
+      )
+  );
+}
 
 //Error snack bar for show errors
 successSnackBar(BuildContext context, String text) {
@@ -30,10 +39,36 @@ successSnackBar(BuildContext context, String text) {
   );
 }
 
+infoMessage(String msg,Color bgColor){
+  return(
+    Container(
+      padding: const EdgeInsets.symmetric(vertical: 50,horizontal: 20),
+      decoration: BoxDecoration(
+        color: bgColor
+      ),
+      child: Text(msg,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 17,
+          fontFamily: 'Inter',
+          color: Colors.white,
+        ),
+      ),
+    )
+  );
+}
+
+
 getSavedToken() async {
   SharedPreferences storage = await SharedPreferences.getInstance();
   String? token = storage.getString('token');
   return token;
+}
+
+getCurrentUserId() async {
+  SharedPreferences storage = await SharedPreferences.getInstance();
+  String? currentId = storage.getString('userid');
+  return currentId;
 }
 
 showAlertDialog(BuildContext context, String text){

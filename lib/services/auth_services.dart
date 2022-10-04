@@ -18,7 +18,7 @@ class AuthServices {
         "password_confirmation": confirmPassword
       };
       var body = json.encode(data);
-      var url = Uri.parse(base_url + 'auth/register'); // api register URL
+      var url = Uri.parse('${base_url}auth/register'); // api register URL
       http.Response response = await http.post(
           url,
           headers: headers,
@@ -36,7 +36,7 @@ class AuthServices {
     };
 
     var body = json.encode(data);
-    var url = Uri.parse(base_url + 'auth/login'); // api register URL
+    var url = Uri.parse('${base_url}auth/login'); // api register URL
     http.Response response = await http.post(
         url,
         headers: headers,

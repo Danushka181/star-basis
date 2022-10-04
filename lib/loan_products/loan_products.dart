@@ -1,14 +1,13 @@
-import 'dart:convert';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:star_basis/loan_products/loan_products_add.dart';
 import 'package:star_basis/widgets/common_card_five.dart';
 import '../screens/login_page.dart';
 import '../services/globals.dart';
 import '../services/loan_product_service.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/big_text_widget.dart';
-import '../widgets/common-card-four.dart';
 import '../widgets/loading_widget.dart';
 
 class LoanProducts extends StatefulWidget {
@@ -26,33 +25,43 @@ class _LoanProductsState extends State<LoanProducts> {
   late List searchItems;
 
   getAllProducts() async {
-    var response = await LoanProductsData.getLoanProductsList();
-    print(response.data['loan-products']);
-
-    if (response.statusCode == 200) {
-      if(response.data['loan-products'].length != 0){
-        setState(() {
-          productsList = response.data['loan-products'];
-          allProductsList = productsList;
-          _customerCount = allProductsList.length.toString();
-          isLoading = false;
-        });
-      }else{
-        // Route route =
-        // MaterialPageRoute(builder: (context) => const AddNewCustomers());
-        // Navigator.pushReplacement(context, route);
+      try{
+        var response = await LoanProductsData.getLoanProductsList();
+        if (response.statusCode == 200) {
+          if(response.data['loan-products'].length != 0){
+            setState(() {
+              productsList = response.data['loan-products'];
+              allProductsList = productsList;
+              _customerCount = allProductsList.length.toString();
+              isLoading = false;
+            });
+          }else{
+            Route route =
+            MaterialPageRoute(builder: (context) => const LoanProductsAdd());
+            Navigator.pushReplacement(context, route);
+          }
+        } else {
+          if (response.statusCode == 401) {
+            Route route = MaterialPageRoute(builder: (context) => const LoginPage());
+            Navigator.pushReplacement(context, route);
+          } else {
+            errorSnackBar(context, response['error']);
+          }
+        }
+        
+      }on SocketException {
+        errorSnackBar(context, "No internet connection!");
+        Navigator.pop(context);
+      } on HttpException {
+        errorSnackBar(context, "There is a problem when connecting to server!");
+        Navigator.pop(context);
+      } on FormatException {
+        errorSnackBar(context, "Can't reach the server at the moment");
+        Navigator.pop(context);
       }
-    } else {
-      if (response.statusCode == 401) {
-        Route route = MaterialPageRoute(builder: (context) => const LoginPage());
-        Navigator.pushReplacement(context, route);
-      } else {
-        errorSnackBar(context, response['error']);
-      }
-    }
   }
 
-  void centersSearch(String query) {
+  void searchGroups(String query) {
     searchItems = [];
     if (query.isNotEmpty) {
       for (var item in allProductsList) {
@@ -110,7 +119,7 @@ class _LoanProductsState extends State<LoanProducts> {
                   fontWeight: FontWeight.w500
                 ),
                 onChanged: (value) {
-                  // searchCustomers(value);
+                  searchGroups(value);
                 },
               ),
             ),
@@ -155,12 +164,13 @@ class _LoanProductsState extends State<LoanProducts> {
             const SizedBox(
               height: 30,
             ),
-            isLoading == false ? ListView.builder(
+            isLoading == false ?
+              ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: productsList != null ? productsList.length : 0,
                 itemBuilder: (_, index) {
-                  Map<String, dynamic> userData   = productsList[index]['user'];
+                  // Map<String, dynamic> userData   = productsList[index]['user'];
                   return GestureDetector(
                     onTap: () {
                       // Navigator.push(
@@ -175,8 +185,8 @@ class _LoanProductsState extends State<LoanProducts> {
                     },
                     child: CommonCardFive(
                       cardHeading: productsList[index]['loan_product_name'],
-                      cardSubHeading: "Document Charge is "+productsList[index]['document_charge']+"%",
-                      loanAmount: "Max : "+productsList[index]['max_loan_amount'],
+                      cardSubHeading: "Document Charge is ${productsList[index]['document_charge']}%",
+                      loanAmount: "Max : ${productsList[index]['max_loan_amount']}",
                       cardNumber: productsList[index]['id'].toString(),
                       createdAt: DateFormat.yMMMEd().format( DateTime.parse( productsList[index]['created_at']) .toLocal()),
                     ),
@@ -198,7 +208,7 @@ class _LoanProductsState extends State<LoanProducts> {
         child: FloatingActionButton(
           backgroundColor: Colors.lightGreen,
           onPressed: () {
-            // Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => ));
+            Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => const LoanProductsAdd()));
           },
           child: const Icon(Icons.add),
         ),
