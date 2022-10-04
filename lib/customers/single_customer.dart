@@ -9,6 +9,7 @@ import 'package:star_basis/widgets/common_card_details_row.dart';
 import '../screens/login_page.dart';
 import '../services/customers_services.dart';
 import '../services/globals.dart';
+import '../services/actions.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/single_header_card.dart';
@@ -91,12 +92,38 @@ class _SingleCustomerState extends State<SingleCustomer> {
                 CommonCardUserRow(rowHeading: 'DATE OF BIRTH :', rowValue: DateFormat('yyyy-MM-dd').format(DateTime.parse(_customerDetails['c_bday'].toString()).toLocal())),
                 CommonCardUserRow(rowHeading: 'AGE :', rowValue: _customerDetails['c_age'].toString()),
                 CommonCardUserRow(rowHeading: 'ID CARD NUMBER  :', rowValue: _customerDetails['c_id_number'].toString()),
-                CommonCardUserRow(rowHeading: 'MOBILE NUMBER :', rowValue: _customerDetails['c_mobile_number'].toString()),
-                CommonCardUserRow(rowHeading: 'HOME NUMBER :', rowValue: _customerDetails['c_land_number'].toString()),
-                CommonCardUserRow(rowHeading: 'MONTHLY INCOME :', rowValue: 'Rs '+ _customerDetails['c_month_income'].toString()),
+                GestureDetector(
+                  onTap: () {
+                    ActionsList.makePhoneCall(_customerDetails['c_mobile_number'].toString());
+                  },
+                  child: CommonCardUserRow(rowHeading: 'MOBILE NUMBER :', rowValue: _customerDetails['c_mobile_number'].toString()),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    ActionsList.makePhoneCall(_customerDetails['c_land_number'].toString());
+                  },
+                  child: CommonCardUserRow(rowHeading: 'HOME NUMBER :', rowValue: _customerDetails['c_land_number'].toString()),
+                ),
+                CommonCardUserRow(rowHeading: 'MONTHLY INCOME :', rowValue: 'Rs ${_customerDetails['c_month_income']}'),
                 CommonCardUserRow(rowHeading: 'GENDER :', rowValue: _customerDetails['c_gender'] == '1' ? "Male" : 'Female' ),
                 CommonCardUserRow(rowHeading: 'MARITAL STATE :', rowValue: _customerDetails['c_married'] == '1' ? "Married" : "Single"),
+                _customerDetails['c_married'] == '1' ?
+                Column(
+                  children: [
+                    CommonCardUserRow(rowHeading: 'Suppose Name :', rowValue: _customerDetails['c_sup_name'].toString()),
+                    CommonCardUserRow(rowHeading: 'Suppose Job :', rowValue: _customerDetails['c_sup_job'].toString()),
+                    GestureDetector(
+                      onTap: (){
+                        ActionsList.makePhoneCall(_customerDetails['c_sup_phone'].toString());
+                      },
+                      child: CommonCardUserRow(rowHeading: 'Suppose Phone Number :', rowValue: _customerDetails['c_sup_phone'].toString()),
+                    ),
+                    CommonCardUserRow(rowHeading: 'Suppose ID Card Number :', rowValue: _customerDetails['c_sup_id_number'].toString()),
+                  ],
+                )
+                : Container(),
                 CommonCardUserRow(rowHeading: 'BANK ACCOUNT NUMBER :', rowValue: _customerDetails['c_bank_account'].toString()),
+                CommonCardUserRow(rowHeading: 'ELECTRICITY BILL NUMBER :', rowValue: _customerDetails['c_ceb_number'].toString()),
                 CommonCardUserRow(rowHeading: 'ELECTRICITY BILL NUMBER :', rowValue: _customerDetails['c_ceb_number'].toString()),
               ],
             ),

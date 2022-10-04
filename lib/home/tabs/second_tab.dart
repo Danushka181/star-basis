@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:star_basis/customers/add_new_customer.dart';
@@ -25,7 +23,6 @@ class _SecondTabState extends State<SecondTab> {
 
   late String _customerCount   = '0';
   late List _allCustomers;
-  late List _searchCustomers;
   late List _customerList;
 
   bool isLoading = true;
@@ -170,6 +167,9 @@ class _SecondTabState extends State<SecondTab> {
                   ],
                 ),
               ),
+              const SizedBox(
+                height: 20,
+              ),
               // Progress bar
               isLoading == false ? ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
@@ -200,7 +200,7 @@ class _SecondTabState extends State<SecondTab> {
                           createdBy: userData['name'].toString(),
                           cardSubHeading: _customerList[index]
                           ['c_address'],
-                        idNumber: 'ID NUM : '+ _customerList[index]['c_id_number'],),
+                        idNumber: 'ID NUM : ${_customerList[index]['c_id_number']}',),
                     );
                   })
 
@@ -218,12 +218,13 @@ class _SecondTabState extends State<SecondTab> {
           height: 70,
           width: 70,
           child: FloatingActionButton(
-            child: const Icon(Icons.add), //child widget inside this button
             backgroundColor: Colors.lightGreen,
             onPressed: () {
               Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => const AddNewCustomers()));
             },
+            child: const Icon(Icons.add),
           ),
-        ));
+        ),
+    );
   }
 }

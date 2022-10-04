@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:star_basis/loan_products/loan_products_add.dart';
 
-import '../widgets/common_card_two.dart';
+import '../widgets/app_bar.dart';
+import 'loan_tabs/issued_loans.dart';
+import 'loan_tabs/pending_loans.dart';
+import 'loan_tabs/rejected_loans.dart';
 
 class LoanDashboard extends StatefulWidget {
-  const LoanDashboard({Key? key}) : super(key: key);
+  int activeTab;
+  LoanDashboard({Key? key, required this.activeTab}) : super(key: key);
 
   @override
   State<LoanDashboard> createState() => _LoanDashboardState();
@@ -14,86 +19,65 @@ class _LoanDashboardState extends State<LoanDashboard> with TickerProviderStateM
 
   @override
   void initState() {
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this,initialIndex:widget.activeTab);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        iconTheme: const IconThemeData(
-          color: Colors.black54, //change your color here
-        ),
-        elevation: 4,
-        title: const Text(
-          "Loan Service..",
-          textAlign: TextAlign.left,
-          style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              fontFamily:'Inter',
-              color: Colors.black54,
-          ),
-        ),
-      ),
+      appBar: const AppBarWidget(title: 'Loan Center'),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            child: TabBar(
-              unselectedLabelColor: Colors.black.withOpacity(0.5),
-              labelColor: Colors.lightGreen,
-              indicatorColor: Colors.lightGreen,
-              indicatorPadding: const EdgeInsets.only(left: 5,right: 5),
-              tabs: const [
-                Tab(
-                  text: 'All',
-                  height: 60,
-                ),
-                Tab(
-                  text: 'Pending',
-                  height: 60,
-                ),
-                Tab(
-                  text: 'Completed',
-                  height: 60,
-                ),
-                Tab(
-                  text: 'Rejected',
-                  height: 60,
-                )
-              ],
-              controller: _tabController,
-              indicatorSize: TabBarIndicatorSize.tab,
-            ),
+          TabBar(
+            unselectedLabelColor: Colors.black.withOpacity(0.5),
+            labelColor: Colors.lightGreen,
+            indicatorColor: Colors.lightGreen,
+            indicatorPadding: const EdgeInsets.only(left: 5,right: 5),
+            tabs: const [
+              Tab(
+                text: 'Issued Loans',
+                height: 60,
+              ),
+              Tab(
+                text: 'Pending',
+                height: 60,
+              ),
+              Tab(
+                text: 'Rejected',
+                height: 60,
+              )
+            ],
+            controller: _tabController,
+            indicatorSize: TabBarIndicatorSize.tab,
           ),
           Expanded(
             flex: 1,
             child: TabBarView(
-              children: [
-                SizedBox(
-                  height: double.infinity,
-                  width: double.infinity,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: const [
-                        CommonCardTwo( cardHeading: 'A K G Kalu Manika A K G Kalu ManikaA K G Kalu Manika', cardSubHeading: '163-c, Kotarupe, Raddolugama', loanAmount: '5000',),
-                        CommonCardTwo( cardHeading: 'A K G Kalu Manika A K G Kalu ManikaA K G Kalu Manika', cardSubHeading: '163-c, Kotarupe, Raddolugama', loanAmount: '43500',),
-                      ],
-                    ),
-                  ),
-                ),
-                const Text('Person'),
-                const Text('test'),
-                const Text('test 4'),
-              ],
               controller: _tabController,
+              children: const [
+                // issued loans
+                IssuedLoans(),
+                PendingLoansList(),
+                RejectedLoansList()
+              ],
             ),
           ),
         ],
+      ),
+      // Add new customer btn
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: SizedBox(
+        height: 70,
+        width: 70,
+        child: FloatingActionButton(
+          backgroundColor: Colors.lightGreen,
+          onPressed: () {
+            Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => const LoanProductsAdd()));
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }

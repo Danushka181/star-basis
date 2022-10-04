@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:star_basis/customers/select_member_group.dart';
-import 'package:http/http.dart' as http;
 import 'package:star_basis/services/globals.dart';
 import 'package:star_basis/services/customers_services.dart';
 
@@ -300,6 +298,21 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                             borderWidth: 2,
                             selectedBorderColor: Colors.green,
                             borderRadius: BorderRadius.circular(10),
+                            onPressed: (int index) {
+                              setState(() {
+                                for (int i = 0; i < gender.length; i++) {
+                                  gender[i] = i == index;
+                                  if (index == 0) {
+                                    sexType = true;
+                                    cGender = '1';
+                                  } else {
+                                    sexType = false;
+                                    cGender = '0';
+                                  }
+                                }
+                              });
+                            },
+                            isSelected: gender,
                             children: <Widget>[
                               Padding(
                                 padding: const EdgeInsets.all(15.0),
@@ -316,29 +329,13 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                                 ),
                               ),
                             ],
-                            onPressed: (int index) {
-                              setState(() {
-                                for (int i = 0; i < gender.length; i++) {
-                                  gender[i] = i == index;
-                                  if (index == 0) {
-                                    sexType = true;
-                                    cGender = '1';
-                                  } else {
-                                    sexType = false;
-                                    cGender = '0';
-                                  }
-                                }
-                              });
-                            },
-                            isSelected: gender,
                           ),
                         ),
 
                         const SizedBox(
                           height: 30,
                         ),
-
-//Married or Unmarried
+                        //Married or Unmarried
                         Container(
                           width: MediaQuery.of(context).size.width,
                           child: ToggleButtons(
@@ -347,6 +344,21 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                             borderWidth: 2,
                             selectedBorderColor: Colors.green,
                             borderRadius: BorderRadius.circular(10),
+                            onPressed: (int index) {
+                              setState(() {
+                                for (int i = 0; i < isSelected.length; i++) {
+                                  isSelected[i] = i == index;
+                                  if (index == 0) {
+                                    married = true;
+                                    cMarried = '1';
+                                  } else {
+                                    married = false;
+                                    cMarried = '0';
+                                  }
+                                }
+                              });
+                            },
+                            isSelected: isSelected,
                             children: <Widget>[
                               Padding(
                                 padding: const EdgeInsets.all(15.0),
@@ -363,21 +375,6 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                                 ),
                               ),
                             ],
-                            onPressed: (int index) {
-                              setState(() {
-                                for (int i = 0; i < isSelected.length; i++) {
-                                  isSelected[i] = i == index;
-                                  if (index == 0) {
-                                    married = true;
-                                    cMarried = '1';
-                                  } else {
-                                    married = false;
-                                    cMarried = '0';
-                                  }
-                                }
-                              });
-                            },
-                            isSelected: isSelected,
                           ),
                         ),
 
@@ -794,7 +791,7 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                             ),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.lightGreen,
+                                backgroundColor: Colors.lightGreen,
                                 minimumSize: const Size.fromHeight(60),
                               ),
                               child: Row(
@@ -812,12 +809,12 @@ class _AddNewCustomersState extends State<AddNewCustomers> {
                                       ),
                                     ),
                                     isLoading ? const SizedBox(
+                                      width: 30,
+                                      height: 30,
                                       child: CircularProgressIndicator(
                                         strokeWidth: 2,
                                         color: Colors.white,
                                       ),
-                                      width: 30,
-                                      height: 30,
                                     ): const Text(''),
                                   ]),
                               onPressed: () {

@@ -50,7 +50,7 @@ class CustomPageHeading extends StatelessWidget {
                     headerLargeText,
                     style: const TextStyle(
                       fontFamily: 'Inter',
-                      fontSize: 43,
+                      fontSize: 40,
                       fontWeight: FontWeight.w500,
                       color: Colors.white,
                       letterSpacing: 0,
