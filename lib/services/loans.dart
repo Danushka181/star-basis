@@ -27,7 +27,7 @@ class LoansService{
         }
 
     }
-
+    // get all pending loans list
     static Future getAllPendingLoansList() async{
         const url = '${base_url}loans/pending-loans';
         try{
@@ -48,7 +48,7 @@ class LoansService{
             return e;
         }
     }
-
+    // get all issued loans list
     static Future getIssuedLoansList() async {
         const url = '${base_url}loans/issued-loans';
         try{
@@ -70,7 +70,7 @@ class LoansService{
         }
 
     }
-
+    // Get all rejected loans
     static Future getAllRejectedLoansList() async {
         const url = '${base_url}loans/rejected-loans';
         try{
@@ -91,8 +91,7 @@ class LoansService{
             return e;
         }
     }
-
-
+    // Get single loan details
     static Future getSingleLoanDetails(String loanId) async {
         var url = '${base_url}loans/show/$loanId';
         try{
@@ -113,5 +112,27 @@ class LoansService{
             return e;
         }
 
+    }
+    // Create new Loan
+    static Future createNewLoans(Map<String, dynamic> data) async{
+        var url = '${base_url}loans/create';
+        try{
+            String token = await getSavedToken();
+            Response response = await Dio().post(
+                url,
+                options: dio.Options(
+                    validateStatus: (_) => true,
+                    headers: {
+                        'HttpHeaders.contentTypeHeader': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer $token',
+                    }
+                ),
+                data: data,
+            );
+            return response;
+        } on DioError catch(e){
+            return e;
+        }
     }
 }

@@ -27,34 +27,22 @@ class _IssuedLoansState extends State<IssuedLoans> {
   getAllIssuedLoans() async{
     try{
       var response = await LoansService.getIssuedLoansList();
-      if (response.statusCode == 200) {
-        if(response.data['loans'].length != 0){
-          setState(() {
-            issuedLoans = response.data['loans'];
-            allIssuedLoans = issuedLoans;
-            isLoading = false;
-          });
-        }else{
-          if (!mounted) return;
-          notifySnackBar(context,'Currently no issued loans, Please approve!');
-          setState((){
-            issuedLoans = [];
-            allIssuedLoans = issuedLoans;
-            isLoading = false;
-            isNoData = true;
-          });
-        }
-      } else {
-        if (response.statusCode == 401) {
-          if (!mounted) return;
-          Route route = MaterialPageRoute(builder: (context) => const LoginPage());
-          Navigator.pushReplacement(context, route);
-        } else {
-          if (!mounted) return;
-          errorSnackBar(context, response['error']);
-        }
+      if(response.data['loans'].length != 0){
+        setState(() {
+          issuedLoans = response.data['loans'];
+          allIssuedLoans = issuedLoans;
+          isLoading = false;
+        });
+      }else{
+        if (!mounted) return;
+        notifySnackBar(context,'Currently no issued loans, Please approve!');
+        setState((){
+          issuedLoans = [];
+          allIssuedLoans = issuedLoans;
+          isLoading = false;
+          isNoData = true;
+        });
       }
-
     }on SocketException {
       errorSnackBar(context, "No internet connection!");
       Navigator.pop(context);

@@ -87,7 +87,7 @@ class _SingleLoanDataPendingState extends State<SingleLoanDataPending> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarWidget( title: 'Loan Details (pending)',),
+      appBar: const AppBarWidget( title: 'Loan Detail',),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
@@ -145,15 +145,43 @@ class _SingleLoanDataPendingState extends State<SingleLoanDataPending> {
                             var approveState  =  approvals['l_approve_state'] == '1' ? 'Approved' : 'Rejected';
                             approveState   =  loanUserDetails['id'] ==  approvalsUsers['id'] ? 'Approved and Created ' : approveState;
                             Color approveColor = approvals['l_approve_state'] == '1' ? Colors.green : Colors.redAccent;
-                            return Row(
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(
-                                  '$approveState by : ',
-                                  style: TextStyle(
-                                      color: approveColor
-                                  ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      '$approveState by : ',
+                                      style: TextStyle(
+                                          color: approveColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    Text(
+                                        approvalsUsers['name'].toString(),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black54
+                                        ),
+                                    ),
+                                  ],
                                 ),
-                                Text(approvalsUsers['name'].toString())
+                                const SizedBox(height: 5,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Comment : ${approvals['l_comments'] != null ? approvals['l_comments'].toString() : '-'}',
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.black45,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 15,)
+
                               ],
                             );
                           }else{
@@ -169,53 +197,6 @@ class _SingleLoanDataPendingState extends State<SingleLoanDataPending> {
                           Row(
                             mainAxisAlignment:MainAxisAlignment.spaceBetween,
                             children: [
-                              Expanded(
-                                child:
-                                Material(
-                                  elevation: 5,
-                                  color: Colors.lightGreen,
-                                  borderRadius: BorderRadius.circular(3),
-                                  child: MaterialButton(
-                                    minWidth: 320,
-                                    height: 40,
-                                    onPressed: () {
-                                      showModalBottomSheet(
-                                        backgroundColor: Colors.transparent,
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return Container(
-                                            height: MediaQuery.of(context).size.height,
-                                            padding: const EdgeInsets.all(20),
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(30),
-                                                  topRight: Radius.circular(30)),
-                                            ),
-                                            child: ApproveRejectWidget(
-                                              popHeading: 'Approval Confirmation!',
-                                              buttonText: 'Yes Approve',
-                                              loanId: widget.loanId,
-                                              approveState: '1',
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: const Text(
-                                      'Approve',
-                                      style:  TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-
-                              ),
-                              const SizedBox(width: 10,),
                               Expanded(
                                 child:
                                 Material(
@@ -253,6 +234,53 @@ class _SingleLoanDataPendingState extends State<SingleLoanDataPending> {
                                     },
                                     child: const Text(
                                       'Reject',
+                                      style:  TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontFamily: 'Inter',
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                              ),
+                              const SizedBox(width: 10,),
+                              Expanded(
+                                child:
+                                Material(
+                                  elevation: 5,
+                                  color: Colors.lightGreen,
+                                  borderRadius: BorderRadius.circular(3),
+                                  child: MaterialButton(
+                                    minWidth: 320,
+                                    height: 40,
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return Container(
+                                            height: MediaQuery.of(context).size.height,
+                                            padding: const EdgeInsets.all(20),
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(30),
+                                                  topRight: Radius.circular(30)),
+                                            ),
+                                            child: ApproveRejectWidget(
+                                              popHeading: 'Approval Confirmation!',
+                                              buttonText: 'Yes Approve',
+                                              loanId: widget.loanId,
+                                              approveState: '1',
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: const Text(
+                                      'Approve',
                                       style:  TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,

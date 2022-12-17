@@ -6,9 +6,9 @@ class CommonCardFour extends StatelessWidget {
 
   final String cardHeading;
   final String cardNumber;
-  final activeColor;
-  final usersCount;
-  const CommonCardFour({Key? key, required this.cardHeading, required this.cardNumber, this.activeColor=Colors.white, this.usersCount}) : super(key: key);
+  final Color activeColor;
+  final String usersCount;
+  const CommonCardFour({Key? key, required this.cardHeading, required this.cardNumber, this.activeColor=Colors.white, required this.usersCount}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

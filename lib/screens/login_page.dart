@@ -129,6 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: const InputDecoration(
                             hintText: "Password",
                           ),
+                          obscureText: true,
                           onChanged: (value){
                             _password = value;
                           },

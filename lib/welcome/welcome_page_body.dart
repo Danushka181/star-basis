@@ -30,7 +30,7 @@ class WelcomePageBody extends StatelessWidget {
        const SizedBox(
          height: 60,
        ),
-       const BigTextWidget(content: 'Hello!', fontSize: 30,colorCode: Colors.green,),
+       const BigTextWidget(content: 'ආයුබෝවන්!', fontSize: 30,colorCode: Colors.green,),
        const SizedBox(
          height: 10,
        ),

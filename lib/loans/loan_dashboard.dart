@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:star_basis/loan_products/loan_products_add.dart';
 
 import '../widgets/app_bar.dart';
+import 'add_new_loan.dart';
 import 'loan_tabs/issued_loans.dart';
 import 'loan_tabs/pending_loans.dart';
 import 'loan_tabs/rejected_loans.dart';
@@ -74,7 +75,7 @@ class _LoanDashboardState extends State<LoanDashboard> with TickerProviderStateM
         child: FloatingActionButton(
           backgroundColor: Colors.lightGreen,
           onPressed: () {
-            Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => const LoanProductsAdd()));
+            Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => const AddNewLoan()));
           },
           child: const Icon(Icons.add),
         ),

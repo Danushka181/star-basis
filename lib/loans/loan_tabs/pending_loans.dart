@@ -26,34 +26,23 @@ class _PendingLoansListState extends State<PendingLoansList> {
   getAllPendingLoans() async{
     try{
       var response = await LoansService.getAllPendingLoansList();
-      if (response.statusCode == 200) {
-        if(response.data['pending-loans'].length != 0){
+      print(response);
+        if (response.data['pending-loans'].length != 0) {
           setState(() {
             pendingLoans = response.data['pending-loans'];
             allPendingLoans = pendingLoans;
             isLoading = false;
           });
-        }else{
+        } else {
           if (!mounted) return;
-          notifySnackBar(context,'Currently no issued loans, Please approve!');
-          setState((){
+          notifySnackBar(context, 'Currently no issued loans, Please approve!');
+          setState(() {
             pendingLoans = [];
             allPendingLoans = pendingLoans;
             isLoading = false;
             isNoData = true;
           });
         }
-      } else {
-        if (response.statusCode == 401) {
-          if (!mounted) return;
-          Route route = MaterialPageRoute(builder: (context) => const LoginPage());
-          Navigator.pushReplacement(context, route);
-        } else {
-          if (!mounted) return;
-          errorSnackBar(context, response['error']);
-        }
-      }
-
     }on SocketException {
       errorSnackBar(context, "No internet connection!");
       Navigator.pop(context);

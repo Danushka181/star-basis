@@ -28,7 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
   _validateEMailAddress(String email) {
-    return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
+    return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
   }
 
   // Create account button pressed
@@ -37,10 +37,12 @@ class _RegisterPageState extends State<RegisterPage> {
       http.Response response = await AuthServices.register(_name, _email, _password, _confirmPassword);
       Map responseMap = jsonDecode(response.body);
       if (response.statusCode == 200) {
+        if (!mounted) return;
         successSnackBar(context,'Account is created Please Log in..');
         Route route = MaterialPageRoute(builder: (context) => const LoginPage());
         Navigator.pushReplacement(context, route);
       } else {
+        if (!mounted) return;
         Navigator.pop(context);
         errorSnackBar(context, responseMap.values.first[0]);
       }
@@ -113,6 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     decoration: const InputDecoration(
                       hintText: "Password",
                     ),
+                      obscureText: true,
                     onChanged: (value){
                       _password = value;
                     },
@@ -133,6 +136,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     decoration: const InputDecoration(
                       hintText: "Confirm Password",
                     ),
+                      obscureText: true,
                     onChanged: (value){
                       _confirmPassword = value;
                     },

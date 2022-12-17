@@ -7,7 +7,9 @@ import '../screens/login_page.dart';
 import '../services/globals.dart';
 import '../services/loans.dart';
 import '../widgets/app_bar.dart';
+import '../widgets/common_card_details_row.dart';
 import '../widgets/loading_widget.dart';
+import '../widgets/loan-data-viewbox.dart';
 import '../widgets/single_header_card.dart';
 
 class SingleLoanData extends StatefulWidget {
@@ -31,7 +33,6 @@ class _SingleLoanDataState extends State<SingleLoanData> {
   getLoanDataSet() async{
     try{
       var response = await LoansService.getSingleLoanDetails(widget.loanId);
-      print(response.data);
       if (response.statusCode == 200) {
         if(response.data['loans'].length != 0){
           setState(() {
@@ -114,16 +115,8 @@ class _SingleLoanDataState extends State<SingleLoanData> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Loan Amount : ${loanDetails['l_amount']}/='),
-                            Text('Loan Pending Amount : ${loanDetails['l_pending_amount']}/='),
-                            Text('Loan Duration : ${loanDetails['l_duration']} Months'),
-                            Text('Weekly Installment : ${loanDetails['l_installment']} /='),
-                            Text('Loan Start Date : ${loanDetails['l_start']}'),
-                            Text('Loan End Date : ${loanDetails['l_end']}'),
-                            Text('Loan Last Payment : ${loanDetails['l_last_payment']}'),
-                            Text('Loan Installment Weeks Count : ${loanDetails['l_installment_count']}'),
-                            Text('Loan Document Charges : ${loanDetails['l_document_charge']}'),
-                            Text('Loan Approved Count : ${loanDetails['get_approved_loans_count']}'),
+                            LoanDataViewBox(loanData: loanDetails,),
+                            CommonCardUserRow(rowHeading: 'Loan Approved Count:', rowValue: loanDetails['get_approved_loans_count']),
                             SizedBox(height: 30,),
                             Text('LOAN USER DETAILS :'),
                             Text('Loan Created By : ${loanUserDetails['name']}'),
@@ -144,15 +137,43 @@ class _SingleLoanDataState extends State<SingleLoanData> {
                                   var approveState  =  approvals['l_approve_state'] == '1' ? 'Approved' : 'Rejected';
                                   approveState   =  loanUserDetails['id'] ==  approvalsUsers['id'] ? 'Approved and Created ' : approveState;
                                   Color approveColor = approvals['l_approve_state'] == '1' ? Colors.green : Colors.redAccent;
-                                  return Row(
+                                  return Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Text(
-                                          '$approveState by : ',
-                                        style: TextStyle(
-                                          color: approveColor
-                                        ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '$approveState by : ',
+                                            style: TextStyle(
+                                              color: approveColor,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          Text(
+                                            approvalsUsers['name'].toString(),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black54
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Text(approvalsUsers['name'].toString())
+                                      const SizedBox(height: 5,),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Comment : ${approvals['l_comments'] != null ? approvals['l_comments'].toString() : '-'}',
+                                            style: const TextStyle(
+                                              fontSize: 13,
+                                              color: Colors.black45,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 15,)
+
                                     ],
                                   );
                                 }else{
